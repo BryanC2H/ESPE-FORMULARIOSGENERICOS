@@ -40,7 +40,7 @@
             });
         </script>
     </head>
-    <body>
+    <body style="background-color: blue;">
 	<%@page import="org.apache.log4j.Logger"%>
         <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
         <%logger.info("esta es la prueba."); %>
