@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Tipo de preguntas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div class="row bg-info">
+           <!-- <div class="col-md-2"><center><img src="espelogo.jpg"/></center></div> -->
+            <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+            <div class="col-md-2"></div>
+        </div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" ><a href="#">Nuevo Tipo</a></li>
+                <li role="presentation"><a href="#">Modificar Preguntas</a></li>
+                <li role="presentation"><a href="TipoPreguntas.html">Tipos de Preguntas</a></li>
+                <li role="presentation"><a href="index.jsp">Volver</a></li>
+            </ul>
+        <form action="tipopregunta.jsp" method="POST">          
+            <div class="container">
+            <div class="row">
+                <div class="col-md-2">Codigo:</div>
+                <div class="col-md-2"><center><label for="codigo" class="sr-only"></label><input id="codigo" type="text" name="codigo" class="form-control" placeholder="00000" required/></center></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><center>
+                        <label>Seleccion</label><input type="radio" name="Seleccion" value="Seleccion Multiple" />
+                        <label>Check</label><input type="radio" name="Seleccion" value="Check" />
+                        <label>Texto</label><input type="radio" name="Seleccion" value="Texto" />
+                        <label>Lista</label><input type="radio" name="Seleccion" value="Lista" />
+                        </center></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><center><button class="btn btn-lg bg-default" type="submit" name="Submit" value="Crear">Crear Respuesta</button></center></div>
+            </div>
+            </div>
+        </form>
+        
+    </body>
+</html>
