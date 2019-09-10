@@ -14,7 +14,7 @@ Author     : Gabii
 <%@page import="espe.edu.ec.models.Cabecera"%>
 <%@page import="espe.edu.ec.models.Matriz"%>
 <%@page import="espe.edu.ec.models.Valores"%>
-<%@page import="espe.edu.ec.models.TipoPreguntas"%>util.TipoPreguntas
+<%@page import="espe.edu.ec.models.TipoPreguntas"%>
 <%@page import="espe.edu.ec.models.Preguntas"%>
 <%@page import="espe.edu.ec.models.Grupo"%>
 <%@page import="java.util.LinkedList"%>

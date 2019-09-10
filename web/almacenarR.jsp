@@ -130,7 +130,7 @@
 
             try {
 
-        %> 
+        %>    
         <div id="imprimir">
         <div class="row bg-default">
             <div class="col-md-2"><center><img src="espelogo.jpg"/></center></div> 

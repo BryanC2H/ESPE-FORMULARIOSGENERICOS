@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.sql.SQLException"%>
-<%@page import="espe.edu.ec.util.BorrarFormulario"%>
+<%@page import="espe.edu.ec.models.BorrarFormulario"%>
 <%@page import="espe.edu.ec.models.FormPersona"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="espe.edu.ec.models.Cabecera"%>

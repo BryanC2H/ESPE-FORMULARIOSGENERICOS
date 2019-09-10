@@ -125,7 +125,6 @@
             out.print("<div class=\"col-md-3\"></div>");
             // out.print("<div class=\"col-md-2\"><p name=\"cod\">Codigo Formulario</p></div>");
             // out.print("<div class=\"col-md-2\"><p name=\"nombre\">Usuario</p></div>");
-            out.print("<div class=\"col-md-1\"><p name=\"iter\">#</p></div>");
             out.print("<div class=\"col-md-1\"><p name=\"pidm\">PIDM</p></div>");
             out.print("<div class=\"col-md-1\"><p name=\"id\">ID</p></div>");
             out.print("<div class=\"col-md-3\"><p name=\"nombres\">Nombres</p></div>");

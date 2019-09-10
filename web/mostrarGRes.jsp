@@ -20,7 +20,7 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="espe.edu.ec.models.Valores"%>
-<%@page import="espe.edu.ec.util.FileUpload"%> 
+<%@page import="espe.edu.ec.models.FileUpload"%> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>  

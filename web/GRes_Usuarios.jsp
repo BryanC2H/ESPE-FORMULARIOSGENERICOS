@@ -12,7 +12,7 @@
 <%@page import="espe.edu.ec.models.Formulario"%>
 <%@page import="espe.edu.ec.connection.DB"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="espe.edu.ec.decrypt.DecryptSmAtrix"%>
+<%@page import="Decrypt.DecryptSmAtrix"%>
 <%@page import="java.util.logging.Level"%>
 <%@page import="java.util.logging.Logger"%>
 <%@page import="espe.edu.ec.models.Respuestas"%>
@@ -20,7 +20,7 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="espe.edu.ec.models.Valores"%>
-<%@page import="espe.edu.ec.util.FileUpload"%> 
+<%@page import="espe.edu.ec.models.FileUpload"%> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>  

@@ -9,13 +9,17 @@
 <%@page import="java.util.LinkedList"%>
 <%@page import="espe.edu.ec.models.Formulario"%>
 <%@page import="espe.edu.ec.connection.DB"%>
+<%@page import="espe.edu.ec.models.LoginServlet"%>"
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.models.Usuario"%> <!-- import de Usuario -->
 <%@page session="true" %> <!-- Se agrega a modo de validacion -->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<% Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser")); //Recibe el atributo de sesion del Servlet
+
+<% 
+    Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser"));
+ //Recibe el atributo de sesion del Servlet
 /*Si el atributo es diferente de nulo muestra la pagina */
     if (currentUser != null) { %>
 <head> 
@@ -51,7 +55,6 @@
                 integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
         crossorigin="anonymous"></script>
         <script src="js/dataoracle.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script> $(document).ready(function ()
     {
         $(
@@ -62,6 +65,7 @@
 </head>
 
 <body>
+    
 <style>.navbar-custom {
         color: #58D68D;
         background-color:#239B56;
@@ -74,14 +78,10 @@
     }</style>
 </br>
 <%out.print("<center><div class=\"col-3 .col-md-7\"><h4 class=\"text alert alert-success\"><strong>" + "Respuestas de Formularios</strong></h4></center></div></center></br>");%>
-<form action="LoginServlet" method="POST">
-    <br><div class="row">
-        <div class="col-md-3"></div>
-
-        <div class="col-md-3"></div>
-    </div>
-    <center> <div class="container" class= "col-3 .col-md-7">
-    <table id="example" class="table table-striped table-bordered" >
+<center> <form action="LoginServlet" method="POST" >
+    
+    <div class="container">
+    <table id="example" class="table table-striped table-bordered">
                 <thead>
                     <tr >
                         <th class="text-center">CODIGO</th>
@@ -127,9 +127,9 @@
          %> 
                 </tbody>
             </table>
-                </center>
-        </div>
+                
                   </form>  
+                </center>
          </body>
        
 <% } else {
@@ -137,7 +137,6 @@
 %>
 
 <html>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="css/bootstrap.min.css" rel="stylesheet"></link>
