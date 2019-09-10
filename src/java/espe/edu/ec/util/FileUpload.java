@@ -13,6 +13,7 @@ import espe.edu.ec.models.Grupo;
 import espe.edu.ec.models.Matriz;
 import espe.edu.ec.models.Preguntas;
 import espe.edu.ec.models.Respuestas;
+import espe.edu.ec.models.TipoPreguntas;
 import espe.edu.ec.models.Valores;
 import java.io.IOException;
 import java.io.InputStream;

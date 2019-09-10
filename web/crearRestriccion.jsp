@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="espe.edu.ec.models.Valores"%>
-<%@page import="espe.edu.ec.util.TipoPreguntas"%>
+<%@page import="espe.edu.ec.models.TipoPreguntas"%>
 <%@page import="espe.edu.ec.models.Preguntas"%>
 <%@page import="espe.edu.ec.models.Preguntas"%>
 <%@page import="java.sql.ResultSet"%>

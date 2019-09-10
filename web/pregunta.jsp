@@ -9,7 +9,7 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.awt.List"%>
 <%@page import="java.util.LinkedList"%>
-<%@page import="espe.edu.ec.util.TipoPreguntas"%>
+<%@page import="espe.edu.ec.models.TipoPreguntas"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.connection.DB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

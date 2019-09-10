@@ -5,21 +5,21 @@
 --%>
 
 <%@page import="java.sql.SQLException"%>
-<%@page import="espe.edu.ec.util.BorrarFormulario"%>
-<%@page import="espe.edu.ec.models.FormPersona"%>
+<%@page import="FORM.BorrarFormulario"%>
+<%@page import="FORM.FormPersona"%>
 <%@page import="javax.swing.JOptionPane"%>
-<%@page import="espe.edu.ec.models.Cabecera"%>
-<%@page import="espe.edu.ec.models.Matriz"%>
-<%@page import="espe.edu.ec.util.TipoPreguntas"%>
+<%@page import="FORM.Cabecera"%>
+<%@page import="FORM.Matriz"%>
+<%@page import="FORM.TipoPreguntas"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="espe.edu.ec.models.Formulario"%>
-<%@page import="espe.edu.ec.models.Grupo"%>
-<%@page import="espe.edu.ec.models.Preguntas"%>
-<%@page import="espe.edu.ec.models.Valores"%>
-<%@page import="espe.edu.ec.models.Respuestas"%>
+<%@page import="FORM.Formulario"%>
+<%@page import="FORM.Grupo"%>
+<%@page import="FORM.Preguntas"%>
+<%@page import="FORM.Valores"%>
+<%@page import="FORM.Respuestas"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="espe.edu.ec.connection.DB"%>
+<%@page import="FORM.DB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -80,7 +80,7 @@
             if(BorrarF != null){
                     //llamar al procedimiento para que se ejecute el borrado del formulario seleccionado
                     BorrarFormulario borF = new BorrarFormulario();
-               //     borF.borraForm(Cod, pidm);  
+                    borF.borraForm(Cod, pidm);  
              }
             if(iteracion!=null)
                 iter=Integer.parseInt(iteracion);
@@ -197,7 +197,7 @@
         </div>
         <ul class="nav nav-tabs" role="tablist">
                <%
-                out.print("<button align=\"center\" class=\"btn btn-primary\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Volver\"><div class=\"col-md-3\"><a href=\"mostrarFormularioUsuario.jsp?Submit=" + Cod + " \"><i class=\"fas fa-arrow-left\" style=\"font-size:40px;color:white\"></i></a></button>");
+                out.print("<button align=\"center\" class=\"btn btn-primary\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Volver\"><div class=\"col-md-3\"><a href=\"mostrarRespuesta.jsp?Submit=" + Cod + " \"><i class=\"fas fa-arrow-left\" style=\"font-size:40px;color:white\"></i></a></button>");
                         %>
             </ul>
             <div class="container">

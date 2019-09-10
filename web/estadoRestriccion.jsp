@@ -8,7 +8,7 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="espe.edu.ec.models.Valores"%>
 <%@page import="java.util.LinkedList"%>
-<%@page import="espe.edu.ec.util.TipoPreguntas"%>
+<%@page import="espe.edu.ec.models.TipoPreguntas"%>
 <%@page import="espe.edu.ec.models.Preguntas"%>
 <%@page import="espe.edu.ec.models.Grupo"%>
 <%@page import="espe.edu.ec.models.Formulario"%>
