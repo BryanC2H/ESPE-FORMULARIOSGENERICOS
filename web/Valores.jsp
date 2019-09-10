@@ -7,7 +7,7 @@
 
 <%@page import="espe.edu.ec.connection.DB"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="espe.edu.ec.util.TipoPreguntas"%>
+<%@page import="espe.edu.ec.models.TipoPreguntas"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="espe.edu.ec.models.Grupo"%>
 <%@page import="espe.edu.ec.models.Preguntas"%>

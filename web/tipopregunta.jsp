@@ -7,7 +7,7 @@
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.connection.DB"%>
-<%@page import="espe.edu.ec.util.TipoPreguntas"%>
+<%@page import="espe.edu.ec.models.TipoPreguntas"%>
 <%@page import="espe.edu.ec.models.ParametrosBD"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

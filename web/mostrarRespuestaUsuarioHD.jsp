@@ -10,7 +10,7 @@
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="espe.edu.ec.models.Cabecera"%>
 <%@page import="espe.edu.ec.models.Matriz"%>
-<%@page import="espe.edu.ec.util.TipoPreguntas"%>
+<%@page import="espe.edu.ec.models.TipoPreguntas"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="espe.edu.ec.models.Formulario"%>
