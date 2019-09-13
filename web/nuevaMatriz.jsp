@@ -30,17 +30,10 @@
     </head>
     <body>
 <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+  
         <%             try {
 
-        %>
-        <!AQUI SE TRAE LOS CODIGOS DE CADA GRUPO,PREGUNTA, ETC>
-    <%      request.setCharacterEncoding("UTF-8");
+         request.setCharacterEncoding("UTF-8");
             DB con = DB.getInstancia();
             Connection co = con.getConnection();
             String codigoTP=request.getParameter("tipo");

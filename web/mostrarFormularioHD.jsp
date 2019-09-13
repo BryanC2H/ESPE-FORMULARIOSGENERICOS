@@ -4,6 +4,8 @@
     Author     : D4ve
 --%>
 
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.LinkedList"%>
@@ -19,119 +21,122 @@
 /*Si el atributo es diferente de nulo muestra la pagina */
     if (currentUser != null) { %>
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset=UTF-8">
-    <title>Mostrar-Formularios</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script> $(document).ready(function ()
-        {
-            $(
-                    '[data-toggle="tooltip"]'
-                    ).tooltip();
-        });
-    </script>
-    <%
-        DB con = DB.getInstancia();
-        Connection co = con.getConnection();
-        LinkedList<Formulario> listaF = new LinkedList<Formulario>();
+    </br></br></br>
 
-        ResultSet rs = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS ORDER BY codigo_UZGTFORMULARIOS ASC").executeQuery();
+<div class="container">
+    <nav class="navbar navbar-default" role="tablist">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand"><b>Gestion de Formularios</b> </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
 
-        while (rs.next()) {
-            Formulario F = new Formulario();
-            F.setCodigo_formulario(rs.getInt(1));
-            F.setNombre_formulario(rs.getString(2));
-            F.setDescripcion_formulario(rs.getString(3));
-            F.setFecha_formulario(rs.getDate(4));
-            F.setObjetivo_formulario(rs.getString(5));
-            F.setBase_formulario(rs.getString(6));
-            listaF.add(F);
-        }
-        rs.close();
-
-
-    %>
-
+                    <li role="presentation">
+                        <a href="mostrarRespuestaHD.jsp">
+                            <i class="fas fa-file-archive"></i> Respuestas</a>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+<!-- --------------------------------Fin Navbar superior-------------------------------------------  -->
+<meta http-equiv="Content-Type" content="text/html" charset=UTF-8">
+<title>Mostrar-Formularios</title>
+<%
+    out.println(ConstantesForm.Css);
+    out.println(ConstantesForm.js);
+%>
 </head>
 
+<body>
 
-<style>.navbar-custom {
-        color: #58D68D;
-        background-color: #239B56;
-        border-color: #000
-    }</style>
+    </br>
+    <form action="LoginServlet" method="POST">
+        <br><div class="row">
+            <div class="col-md-3"></div>
 
-</br></br></br>
-<ul class="nav nav-tabs" role="tablist">
+            <div class="col-md-3"></div>
+        </div>
+        <center> <div class="container" class= "col-3 .col-md-7">
+                <table id="example" class="table table-striped table-bordered" >
+                    <thead>
+                        <tr >
+                            <th class="text-center">CODIGO</th>
+                            <th class="text-center">NOMBRE</th>
+                            <th class="text-center">OPCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            DB con = DB.getInstancia();
+                            Connection co = con.getConnection();
 
-    <%        
-        //out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white;\" href=\" mostrarFormulario.jsp\"><i class=\"fas fa-tools\" style='font-size:24px'></i><strong> Gesti�n </strong></a></li>");
-        out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white ;\" href=\"mostrarRespuestaHD.jsp\"><i class=\"fas fa-\" style='font-size:24px'>&#xf15c;</i><strong> Respuestas</strong></a></li></br>");
-    %>
+                            PreparedStatement st;
+                            ResultSet ts;
+                            st = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS ORDER BY codigo_UZGTFORMULARIOS ASC");
+                            ts = st.executeQuery();
+                            //      Formularios_Connection con = F
+                            while (ts.next()) {
+                                String cod = "";
+                        %>
+
+                    <form action="" method="POST" target="_self" id="mr" style="display:inline;">
 
 
-    <%--<li role="presentation"><a  href="mostrarGRes.jsp" >Volver</a></li>--%>
-</ul>
-<form action="LoginServlet" method="POST">
-    <div class="row">
-        <div class="col-md-3"></div>
+                        <tr>
+                            <td class="text-center"><%= ts.getInt("CODIGO_UZGTFORMULARIOS")%> </td>
+                            <td class="text-center"><%= ts.getString("UZGTFORMULARIOS_NOMBRE")%> </td>
+                            <td>
+                                <div class="btn-toolbar text-center" role="toolbar">
+                                    <div class="row">
+                                        <div class="col-md-1 center-block"></div>
+                                        <div class="btn-group col-md-12">
+                                            <div class="col-md-6"><button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ver" class="btn btn-default" type="text" name="Submit" onclick="this.form.action = 'mostrarHD.jsp';this.form.submit();" value="<%= ts.getInt("CODIGO_UZGTFORMULARIOS")%>"><i class="fas fa-eye" style='font-size:20px'></i></button></div>
 
-        <div class="col-md-3"></div>
+                                            <div class="col-md-3"><button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="publicar" class="btn btn-default" type="text" name="Submit" onclick="this.form.action = 'publicarUsuarioHD.jsp';this.form.submit();" value="<%= ts.getInt("CODIGO_UZGTFORMULARIOS")%>"><i class="fas fa-chalkboard-teacher" style='font-size:20px'></i></button></div>
+
+
+
+                                        </div>
+                                        <div class="col-md-1 center-block"></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </form> 
+                    <% }
+                        ts.close();
+                        con.closeConexion();
+                    %> 
+                    </tbody>
+                </table>
+        </center>
     </div>
-    <%
-      //out.println("<div class=\"row\">");
-        //out.println("<div class=\"col-md-3\"></div>");
-        out.println("<center><div class=\"col-3 .col-md-7\"><h4 class=\"text alert alert-success\"><strong>" + "Gestión Formularios</strong></h4></div></center>");
-        out.println("</div>");
-        out.print("<center><div class=\"row\">");
-        out.print("<div class=\"col-md-2\"></div>");
-        out.print("<div class=\"col-md-1\"><p name=\"cod\"><b>Código </b></p></div>");
-        out.print("<div class=\"col-md-5\"><p name=\"nombre\"><b>Nombre Formulario</b></p></div>");
-        out.print("<div class=\"col-md-2\"><p name=\"pidm\"><b>Acciones</p></b></div>");
-        out.print("<div class=\"col-md-1\"></div>");
-        out.print("</div></center></form>");
-        out.print("<hr>");
-        for (int i = 0; i < listaF.size(); i++) {
-
-            String cod = "";
-            out.print("<form action=\"\" method=\"POST\" target=\"_self\" style=\"display:inline;\">");
-
-            out.print("<div class=\"row\">");
-            out.print("<div class=\"col-md-1\"></div>");
-            out.print("<div class=\"col-md-3\"><center><p id=\"cod\">" + listaF.get(i).getCodigo_formulario() + "</p></center></div>");
-            out.print("<div class=\"col-md-4\"><p name=\"nombre\">" + listaF.get(i).getNombre_formulario() + "</p></div>");
-            out.print("<div class=\"col-md-4\"><button class=\"btn btn-outline-warning\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver \" type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarHD.jsp';this.form.submit();\" value='" + cod + listaF.get(i).getCodigo_formulario() + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button><button class=\"btn btn-outline-success\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Publicar \" type=\"text\" name=\"Submit\" onclick=\"this.form.action='publicarUsuarioHD.jsp';this.form.submit();\" value='" + cod + listaF.get(i).getCodigo_formulario() + "'><i class=\"fas fa-chalkboard-teacher\" style='font-size:20px'></i></button></div>");
-            out.print("</div></form>");
-            //out.print("<form action=\"publicarUsuario.jsp\" method=\"POST\" target=\"_self\" style=\"display: inline;\">");
-            //out.print("<div class=\"row\">");
-            //out.print("<div class=\"col-md-3\"><button class=\"btn btn-default\" type=\"text\" name=\"enviar\" value='"+cod+listaF.get(i).getCodigo_formulario()+"'>Publicar</button></div>");
-            //out.print("</div></form>");
-        }
-        /*
-         for(int i=0; i<listaF.size();i++)
-         {
-                            
-         String cod = "";
-         out.println("<form action=\"publicarUsuario.jsp\" method=\"POST\" target=\"_self\">");
-         out.println("<div class=\"col-md-4\"><button class=\"btn btn-default\" type=\"text\" name=\"enviar\" value='"+cod+listaF.get(i).getCodigo_formulario()+"'>Publicar</button></div>");
-         out.println("</div></form>");
-         }*/
-        con.closeConexion();
-
-    %>
 </form>  
+</body>
+
 <% } else {
 
 %>
 
 <html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="css/bootstrap.min.css" rel="stylesheet"></link>
+        <%            out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
         <title>No Autorizado</title>
     </head>
     <body>
@@ -168,5 +173,4 @@
 
 
 <% }%>
-
 

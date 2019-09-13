@@ -4,32 +4,36 @@
     Author     : D4ve
 --%>
 
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    
-     <script>
 
-    window.onload=function(){
+    <script>
 
-                // Una vez cargada la página, el formulario se enviara automáticamente.
-                //vent=window.open('','123','width=725,height=600,scrollbars=no,resizable=yes,status=yes,menubar=no,location=no');
-		document.forms["Test"].submit();
+        window.onload = function () {
+
+            // Una vez cargada la página, el formulario se enviara automáticamente.
+            //vent=window.open('','123','width=725,height=600,scrollbars=no,resizable=yes,status=yes,menubar=no,location=no');
+            document.forms["Test"].submit();
 
 
-    }
-    
+        }
+
     </script>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="css/bootstrap.min.css" rel="stylesheet"></link>
-        <link href="css/style_1.css" rel="stylesheet"></link>
         <title>Test</title>
+        <%
+            out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
+    
     </head>
     <body>
         <ul class="nav nav-tabs" role="tablist">
 
-<%@page import="org.apache.log4j.Logger"%>
+            <%@page import="org.apache.log4j.Logger"%>
             <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
             <%logger.info("esta es la prueba."); %>
             <%logger.debug("Demostracion del mensaje");%>
@@ -39,20 +43,20 @@
             <%
 
                 try {
-                %>
-                <form name = "Test" action="LoginServlet" method="POST" target="_self">
-                    <%String PIDM=   request.getParameter("param");   
-                     out.print("<div class=\"loader\"></div>");
-            out.print("<input type=\"hidden\" name=\"param\"  value='"+PIDM+"'>");
+            %>
+            <form name = "Test" action="LoginServlet" method="POST" target="_self">
+                <%String PIDM = request.getParameter("param");
+                    out.print("<div class=\"loader\"></div>");
+                    out.print("<input type=\"hidden\" name=\"param\"  value='" + PIDM + "'>");
 
-                    %>
-                </form>
-            
-            
-                
-                
-            </ul>
-           <%             } catch (Exception e) {
+                %>
+            </form>
+
+
+
+
+        </ul>
+        <%             } catch (Exception e) {
                 System.out.println("error." + e.getMessage());
 
             }

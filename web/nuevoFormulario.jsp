@@ -17,8 +17,25 @@
 <%@page import="espe.edu.ec.models.Usuario"%> <!-- import de Usuario -->
 <%@page session="true" %> <!-- Se agrega a modo de validacion -->
 <!DOCTYPE html>
-<% Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser")); //Recibe el atributo de sesion del Servlet
-/*Si el atributo es diferente de nulo muestra la pagina */if (currentUser!=null){ %>
+<%Cookie cookie = null;
+    Cookie[] cookies = null;
+    String pidm = null;
+    String id = null;
+    cookies = request.getCookies();
+    if (cookies != null) {
+        for (int i = 0; i < cookies.length; i++) {
+            cookie = cookies[i];
+            if (cookie.getName().equals("pidm")) {
+                pidm = cookie.getValue();
+            } else if (cookie.getName().equals("id")) {
+                id = cookie.getValue();
+            }
+        }
+    } else {
+        out.println("<h2>No cookies founds</h2>");
+    }
+    String currentUser = pidm;
+    if (currentUser != null) { %>
 <html>
     <head>
        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -26,13 +43,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
     </head>
     <body>
-	<%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+	
         <% 
             DB con = DB.getInstancia();
             Connection co = con.getConnection();

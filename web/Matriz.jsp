@@ -4,17 +4,16 @@
     Author     : Jorge
 --%>
 
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>        
     <head>
         <meta name="description" content="Guia 1 HTML/JavaScript - ADSI 259128"/>
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <%      out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
+
         <script>
             /*function valMatriz(fil, col){
              if(fil>5){
@@ -32,7 +31,7 @@
                                 e = document.getElementById('Matriz');
                                 c += '<table name"tblMatriz" id="tblMatriz" border=1>';
                                 c += '<tr>';
- 
+                    
                                 c += '<td align="center" valing="middle">';
                                 c += '<table name="tblMtz">';
                                 for (i = 0; i <= fil; i++) {
@@ -49,7 +48,7 @@
         </script>
     </head>
     <body>
-         <style>.navbar-custom {
+        <style>.navbar-custom {
                 color: #58D68D;
                 background-color: #239B56 ;
                 border-color: #000
@@ -61,8 +60,8 @@
             <div class="col-md-2"></div>
         </div>
         <ul class="nav nav-tabs" role="tablist">
-            
-           <li class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="presentation"><a style="color:white" href="pregunta.jsp"><i class="fas fa-" style='font-size:24px'>&#xf15c;</i><strong> Volver</strong></a></li></br>
+
+            <li class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="presentation"><a style="color:white" href="pregunta.jsp"><i class="fas fa-" style='font-size:24px'>&#xf15c;</i><strong> Volver</strong></a></li></br>
         </ul>
         <form action="nuevaMatriz.jsp" name="frmArreglo" id="frmArreglo">
             <hr/>
@@ -107,7 +106,7 @@
 
 <br />
 <div align="center">
-        <button class="btn btn-success" type="submit" name="Submit" value="guardar"><strong>Aceptar</strong></button>
+    <button class="btn btn-success" type="submit" name="Submit" value="guardar"><strong>Aceptar</strong></button>
 </div>
 <br/>
 <div id="Matriz">

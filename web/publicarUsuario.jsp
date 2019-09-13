@@ -1,3 +1,4 @@
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="espe.edu.ec.models.Valores"%>
@@ -9,30 +10,50 @@
 <%@page import="espe.edu.ec.models.FormPersona"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.connection.DB"%>
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%
+    Date date = new Date();
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+%>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<%
+    Cookie cookie = null;
+    Cookie[] cookies = null;
+    String pidm = null;
+    String id = null;
+    cookies = request.getCookies();
+    if (cookies != null) {
+        for (int i = 0; i < cookies.length; i++) {
+            cookie = cookies[i];
+            if (cookie.getName().equals("pidm")) {
+                pidm = cookie.getValue();
+            } else if (cookie.getName().equals("id")) {
+                id = cookie.getValue();
+            }
+        }
+    } else {
+        out.println("<h2>No cookies founds</h2>");
+    }
+    String currentUser = pidm;
+%>    
 <html>
+
     <head>
         <title>Publicar Formulario</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script> $(document).ready(function ()
-            {
-                $(
-                        '[data-toggle="tooltip"]'
-                        ).tooltip();
-            });
-        </script>
+        <%
+            out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
+
     </head>
     <body>
         <%@page import="org.apache.log4j.Logger"%>
@@ -127,13 +148,17 @@ and open the template in the editor.
                 out.println("</div>");
             %>
             <h3>Selecciona el/los grupos de usuarios:</h3> 
-            <h3>ID</h3><br>
-            <textarea name="query" rows="1" cols="150" class="panel-body" placeholder="Ingrese Id"></textarea>
+            <div class="col-md-15">
+            
+                  <label for="ID    ">ID</label>
+            <input type="text" class="form-control" name="query"  placeholder="Ingrese Id"></input>
+     
+            </div>f
             <h3>Fecha de vigencia</h3><br>
             <ul><div class="col-md-2"><h4>Desde: </h4></div>
-                <li class="col-md-3"><label for="fechaInicio" class="sr-only">fechaInicio</label><input id="fechaInicio" type="date" name="fechaInicio" class="form-control" placeholder="fechaInicio" required/></li>
+                <li class="col-md-3"><label for="fechaInicio" class="sr-only">fechaInicio</label><input value="<%=dateFormat.format(date)%>" id="fechaInicio" type="date" name="fechaInicio" class="form-control" placeholder="fechaInicio" required/></li>
                 <div class="col-md-2"><h4>Hasta: </h4></div>
-                <li class="col-md-3"><label for="fechaFin" class="sr-only">fechaFin</label><input id="fechaFin" type="date" name="fechaFin" class="form-control" placeholder="fechaFin" required/></li></ul>
+                <li class="col-md-3"><label for="fechaFin" class="sr-only">fechaFin</label><input value="<%=dateFormat.format(date)%>" id="fechaFin" type="date" name="fechaFin" class="form-control" placeholder="fechaFin" required/></li></ul>
             <br><br>
             <h3>Tipo Formulario</h3>
             <div class="col-md-2"><h4>Elija una opción: </h4></div>
@@ -153,8 +178,8 @@ and open the template in the editor.
         </div>
     </div><br><br>
     <%
-        out.println("<div class=\"col-md-10\"><center><button class=\"btn btn-success\" type=\"submit\" name=\"Submit\" onclick=\"this.form.action='estadoPublicacion.jsp';this.form.submit();\" value=\"" + Cod + "\"><span class=\"spinner-grow spinner-grow-sm\">Publicar</button></center></div>");
-        out.println(" <button align=\"center\" class=\"btn btn-primary\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Volver\"> <div class=\"col-md-3\"><a href=\"mostrarRespuesta.jsp?Submit=\"" + Cod + "\" ><i class='fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button>");
+        out.println("<div class=\"col-md-10\"><center><button class=\"btn btn-success\" type=\"submit\" name=\"Submit\" onclick=\"this.form.action='estadoPublicacion.jsp';this.form.submit();\" value=\"" + Cod + "\">Publicar</button></center></div>");
+        //out.println(" <button align=\"center\" class=\"btn btn-primary\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Volver\"> <div class=\"col-md-3\"><a href=\"mostrarRespuesta.jsp?Submit=\"" + Cod + "\" ><i class='fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button>");
     %>          
 </form>
 <%} else {%>
@@ -170,13 +195,17 @@ and open the template in the editor.
             out.println("</div>");
         %>
         <h3>Selecciona el/los grupos de usuarios:</h3> 
-        <h3>ID</h3><br>
-        <textarea name="query" rows="1" cols="150" class="panel-body" placeholder="Ingrese Id"></textarea>
+        <div class="col-md-15">
+            
+                  <label for="ID    ">ID</label>
+            <input type="text" class="form-control" name="query"  placeholder="Ingrese Id"></input>
+     
+            </div>
         <h3>Fecha de vigencia</h3><br>
         <div class="col-md-2"><h4>Desde: </h4></div>
-        <div class="col-md-3"> <label for="fechaInicio" class="sr-only">fechaInicio</label><input id="fechaInicio" type="date" name="fechaInicio" class="form-control" placeholder="fechaInicio" required/></div>
+        <div class="col-md-3"> <label for="fechaInicio" class="sr-only">fechaInicio</label><input value="<%=dateFormat.format(date)%>" id="fechaInicio" type="date" name="fechaInicio" class="form-control" placeholder="fechaInicio" required/></div>
         <div class="col-md-2"><h4>Hasta: </h4></div>
-        <div class="col-md-3"><label for="fechaFin" class="sr-only">fechaFin</label><input id="fechaFin" type="date" name="fechaFin" class="form-control" placeholder="fechaFin" required/></div>
+        <div class="col-md-3"><label for="fechaFin" class="sr-only">fechaFin</label><input value="<%=dateFormat.format(date)%>" id="fechaFin" type="date" name="fechaFin" class="form-control" placeholder="fechaFin" required/></div>
         <br><br>
 
 
@@ -197,7 +226,7 @@ and open the template in the editor.
     </div>
 </div><br><br>
 <%
-    out.println("<div class=\"col-md-12\"><center><button class=\"btn btn-outline-success btn-lg\" type=\"submit\" name=\"Submit\" onclick=\"this.form.action='estadoPublicacion.jsp';this.form.submit();\" value=\"" + Cod + "\", \"" + eF + "\" >Publicar</button></center></div>");
+    out.println("<div class=\"col-md-12\"><center><button class=\"btn btn-success btn-lg\" type=\"submit\" name=\"Submit\" onclick=\"this.form.action='estadoPublicacion.jsp';this.form.submit();\" value=\"" + Cod + "\", \"" + eF + "\" >Publicar</button></center></div>");
 
 %>
 

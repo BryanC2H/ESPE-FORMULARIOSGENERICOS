@@ -4,6 +4,7 @@
     Author     : DIEGOPC
 --%>
 
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Respuestas"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="espe.edu.ec.models.Formulario"%>
@@ -17,26 +18,34 @@
 <%@page import="espe.edu.ec.models.Usuario"%> <!-- import de Usuario -->
 <%@page session="true" %> <!-- Se agrega a modo de validacion -->
 <!DOCTYPE html>
-<% Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser")); //Recibe el atributo de sesion del Servlet
-/*Si el atributo es diferente de nulo muestra la pagina */
+<%Cookie cookie = null;
+    Cookie[] cookies = null;
+    String pidm = null;
+    String id = null;
+    cookies = request.getCookies();
+    if (cookies != null) {
+        for (int i = 0; i < cookies.length; i++) {
+            cookie = cookies[i];
+            if (cookie.getName().equals("pidm")) {
+                pidm = cookie.getValue();
+            } else if (cookie.getName().equals("id")) {
+                id = cookie.getValue();
+            }
+        }
+    } else {
+        out.println("<h2>No cookies founds</h2>");
+    }
+    String currentUser = pidm;
     if (currentUser != null) { %>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Usuario-Formulario</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script> $(document).ready(function ()
-            {
-                $(
-                        '[data-toggle="tooltip"]'
-                        ).tooltip();
-            });
-        </script>
+        <%
+            out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
         <title>Usuario-Formulario</title>
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <div class="row bg-default">
@@ -47,7 +56,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <!-- <li role="presentation" ><a href="NewForm.jsp"><img src="n.png"/> Nuevo Formulario</a></li> 
          <li role="presentation"><a href="mostrarFormulario.jsp"><img src="m.png"/> Gestión Formulario</a></li>
-         <li role="presentation"><a href="mostrarGRes.jsp?param="><img src="pm.png"/> Formularios Publicados</a></li> -->
+         <li role="presentation"><a href="mostrarGRes.jsp><img src="pm.png"/> Formularios Publicados</a></li> -->
         <li class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="presentation"><a style="color:white" href="mostrarRespuesta.jsp"><i class="fas fa-" style='font-size:24px'>&#xf15c;</i><strong> Respuestas</strong></a></li></br>
 
 
@@ -148,8 +157,8 @@
                     out.print("<div class=\"col-xs-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"pidm\" value='" + listaU.get(i).getPIDM() + "' readonly></div>");
                     out.print("<div class=\"col-xs-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"id\" value='" + listaU.get(i).getIdEst() + "' readonly></div>");
                     out.print("<div class=\"col-xs-3\"><input type=\"text\" style='heigth : 1px' size='60' class=\"form-control input-sm\" name=\"nombres\" value='" + listaU.get(i).getNombreUsuario() + "' readonly></div>");
-                    out.print("<div class=\"col-xs-2\"><button class=\"btn btn-outline-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Submit\" value='" + Cod + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button>");
-                    out.print("<button class=\"btn btn-outline-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Borrar\" class=\"btn btn-xs btn-danger\" type=\"text\" name=\"Borrar\" value='" + Cod + "'><i class=\"fas fa-trash\" style='font-size:20px'></i></button></div>");
+                    out.print("<div class=\"col-xs-2\"><button class=\"btn btn-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Submit\" value='" + Cod + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button>");
+                    out.print("<button class=\"btn btn-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Borrar\" class=\"btn btn-xs btn-danger\" type=\"text\" name=\"Borrar\" value='" + Cod + "'><i class=\"fas fa-trash\" style='font-size:20px'></i></button></div>");
                     out.print("</div></form>");
                     //JOptionPane.showMessageDialog(null, listaU.get(i).getPIDM()+": "+listaU.size());
                 }//cierra for para mostrar resultados
@@ -172,8 +181,8 @@
                                 out.print("<div class=\"col-md-1\"><input type=\"text\" style='heigth : 1px' size='5' class=\"form-control input-sm\" name=\"pidm\" value='" + listaU.get(j).getPIDM() + "' readonly></div>");
                                 out.print("<div class=\"col-md-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"id\" value='" + listaU.get(j).getIdEst() + "' readonly></div>");
                                 out.print("<div class=\"col-md-3\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"nombres\" value='" + listaU.get(j).getNombreUsuario() + "' readonly></div>");
-                                out.print("<div class=\"col-md-2\"><button class=\"btn btn-outline-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Submit\" value='" + Cod + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button>");
-                                out.print("<button class=\"btn btn-outline-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Borrar \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Borrar\" value='" + Cod + "'><i class=\"fas fa-trash\" style='font-size:20px'></i></button>");
+                                out.print("<div class=\"col-md-2\"><button class=\"btn btn-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Submit\" value='" + Cod + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button>");
+                                out.print("<button class=\"btn btn-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Borrar \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Borrar\" value='" + Cod + "'><i class=\"fas fa-trash\" style='font-size:20px'></i></button>");
                                 out.print("</div>");
                                 out.print("</div></form>");
                                 aux = listaR.get(i).getIteracionRespuesta();

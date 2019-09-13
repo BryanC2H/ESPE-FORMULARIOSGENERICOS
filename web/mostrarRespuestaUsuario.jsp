@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.sql.SQLException"%>
-<%@page import="espe.edu.ec.models.BorrarFormulario"%>
+<%@page import="espe.edu.ec.util.BorrarFormulario"%>
 <%@page import="espe.edu.ec.models.FormPersona"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="espe.edu.ec.models.Cabecera"%>
@@ -80,7 +80,7 @@
             if(BorrarF != null){
                     //llamar al procedimiento para que se ejecute el borrado del formulario seleccionado
                     BorrarFormulario borF = new BorrarFormulario();
-               //     borF.borraForm(Cod, pidm);  
+                    borF.borraForm(Cod, pidm);  
              }
             if(iteracion!=null)
                 iter=Integer.parseInt(iteracion);
@@ -197,7 +197,7 @@
         </div>
         <ul class="nav nav-tabs" role="tablist">
                <%
-                out.print("<button align=\"center\" class=\"btn btn-primary\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Volver\"><div class=\"col-md-3\"><a href=\"mostrarFormularioUsuario.jsp?Submit=" + Cod + " \"><i class=\"fas fa-arrow-left\" style=\"font-size:40px;color:white\"></i></a></button>");
+                out.print("<button align=\"center\" class=\"btn btn-primary\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Volver\"><div class=\"col-md-3\"><a href=\"mostrarRespuesta.jsp?Submit=" + Cod + " \"><i class=\"fas fa-arrow-left\" style=\"font-size:40px;color:white\"></i></a></button>");
                         %>
             </ul>
             <div class="container">

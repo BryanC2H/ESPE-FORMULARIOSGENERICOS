@@ -19,11 +19,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.Cookie;
+import espe.edu.ec.constant.ConstantesForm;
 
 /**
  *
@@ -78,6 +78,14 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        Cookie[] requestCookies = request.getCookies();
+        String str = null;
+        for(Cookie c : requestCookies){
+            if(c.getName().equals("user")){
+                str= c.getValue();
+            }
+        }
+        System.out.println(str);
     }
 
     /**
@@ -91,42 +99,45 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Usuario user = new Usuario();
+        DecryptSmAtrix dec = new DecryptSmAtrix();
         try {
+            String id = "";
+            int PIDM = 0;
+            String param = request.getParameter("param");
 
-            Usuario user = new Usuario();
-            DecryptSmAtrix dec = new DecryptSmAtrix();
-            String id = request.getParameter("param");
-            //id = new String(dec.decrypt(id));
-            id = "L00001826";
-
-            //int PIDM = obtenerPIDM(id);
-
-            int PIDM = 2401;
-            //String param = "bccd67a1d7973a4109ab65c82680c115";
+            if (param.equalsIgnoreCase("null")) { //LOCAL
+                PIDM = ConstantesForm.pidmUser;
+                param = "bccd67a1d7973a4109ab65c82680c115";
+                id = "L00001826";
+                LOGGER.log(Level.INFO, "LOCAL");
+            } else {//PROD
+                id = new String(dec.decrypt(param));
+                PIDM = obtenerPIDM(id);
+                LOGGER.log(Level.INFO, "PROD");
+            }
+            LOGGER.log(Level.INFO, "ID" + id);
             user.setPIDM(PIDM);
-
-
-            HttpSession session = request.getSession(true);
+            String pidm = Integer.toString(PIDM);
             String action = (request.getPathInfo() != null ? request.getPathInfo() : "");
-            if (PIDM == 7683 || PIDM == 334571 || PIDM == 2401 || PIDM == 12646 || PIDM == 294223) {       //if (isValid(user)) {
-                session.setAttribute("currentSessionUser", user);
+            Cookie pidmCookie = new Cookie("pidm", pidm);
+            Cookie idCookie = new Cookie("id", id);
+            response.addCookie(pidmCookie);
+            response.addCookie(idCookie);
+            if (PIDM == 7683 || PIDM == 334571 || PIDM == 2401 || PIDM == 12646 || PIDM == 294223) {
                 response.sendRedirect("mostrarFormulario.jsp"); //logged-in page   
-            } else { 
-            if (PIDM == 12649 || PIDM == 385472 || PIDM == 14266 || PIDM == 12653) {       //if (isValid(user)) {
-                session.setAttribute("currentSessionUser", user);
+            } else if (PIDM == 12649 || PIDM == 385472 || PIDM == 14266 || PIDM == 12653) {       //if (isValid(user)) {
                 response.sendRedirect("mostrarFormularioHD.jsp"); //logged-in page   
-            } else { 
-                session.setAttribute("userSessionUser", user);
-                response.sendRedirect("GRes_Usuarios.jsp?param=" + request.getParameter("param"));
+            } else {
+                response.sendRedirect("GRes_Usuarios.jsp?param=" + param);
             }//error page 
-            }
+
             if (action.equals("uploadServlet")) {
-                session.invalidate();
-                response.sendRedirect("mostrarGRes.jsp?param=" + request.getParameter("param"));
+                response.sendRedirect("mostrarGRes.jsp");
             }
-        }catch (Exception e) {
-            System.out.println(e);
-            LOGGER.log(Level.WARNING, "theException", e);
+        } catch (Exception e) {
+            System.out.println("EXCEPTION: " + e);
+            LOGGER.log(Level.WARNING, "theException" + e);
         }
     }
 
@@ -149,14 +160,14 @@ public class LoginServlet extends HttpServlet {
             if (pidm != null) {
                 ResultSet rs = co.prepareStatement("SELECT COUNT(UZTUSER_PIDM) FROM UZTPRUS WHERE UZTUSER_PIDM = " + pidm + "AND UZTPROC_ID=1 AND UZTPRUS_ESTADO='A' AND UZTSIST_ID=6").executeQuery();
 
-                LOGGER.log(Level.INFO, "user.getPIDM() {}", user.getPIDM());
+                LOGGER.log(Level.INFO, "user.getPIDM() {}" + user.getPIDM());
 
                 int rows = 0;
 
                 if (rs.next()) {
                     rows = rs.getInt(1);
                 }
-                LOGGER.log(Level.INFO, "ROWS {}", rows);
+                LOGGER.log(Level.INFO, "ROWS {}" + rows);
                 if (rows > 0) {
                     isValid = true;
                     LOGGER.log(Level.INFO, "Usuario Administrador");
@@ -168,7 +179,7 @@ public class LoginServlet extends HttpServlet {
             }
             con.closeConexion();
         } catch (SQLException e) {
-            LOGGER.log(Level.WARNING, "not isValid", e);
+            LOGGER.log(Level.WARNING, "not isValid" + e);
         }
 
         return isValid;
@@ -176,29 +187,25 @@ public class LoginServlet extends HttpServlet {
 
     public int obtenerPIDM(String id) throws SQLException, Exception {
         int PIDM = 0;
-        LOGGER.log(Level.INFO, "obtenerPIDM id: {} ", id);
+        LOGGER.log(Level.INFO, "obtenerPIDM id: " + id);
         DB2 con = DB2.getInstancia();
-
         try {
-
             if (!id.isEmpty()) {
-
                 Connection co = con.getConnection();
-                LOGGER.log(Level.INFO, "getConnection: {}", co);
                 ResultSet rs = co.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM as estPIDM FROM SPRIDEN WHERE SPRIDEN.SPRIDEN_ID = '" + id + "' AND SPRIDEN.SPRIDEN_CHANGE_IND IS NULL").executeQuery();
                 if (rs.next()) {
                     PIDM = rs.getInt(1);
                 }
-                LOGGER.log(Level.INFO, "getInt: {}", rs.getInt(1));
-                LOGGER.log(Level.INFO, "PIDM: {}", PIDM);
+                LOGGER.log(Level.INFO, "PIDM: {}" + PIDM);
 
             } else {
-                LOGGER.log(Level.INFO, "Id es nulo: {}", id);
+                LOGGER.log(Level.INFO, "Id es nulo: " + id);
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.WARNING, "obtenerPIDM {}", e);
+            LOGGER.log(Level.WARNING, "obtenerPIDM: " + e);
+        } finally {
+            con.closeConexion();
         }
-        con.closeConexion();
         return PIDM;
     }
 }

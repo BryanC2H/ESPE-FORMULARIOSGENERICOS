@@ -5,6 +5,7 @@ Author     : Gabii
 --%>
 
 
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.connection.DB2"%>
 <%@page import="espe.edu.ec.models.datoComun"%>
 <%@page import="espe.edu.ec.models.Usuario"%>
@@ -23,17 +24,17 @@ Author     : Gabii
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.connection.DB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="true" %> <!-- Se agrega a modo de validacion -->
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Llenar Formulario</title>
-        <link href="css/bootstrap3.min.css" rel="stylesheet"/>
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+        <%
+            out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
 
         <%
             DB con = DB.getInstancia();
@@ -57,19 +58,28 @@ Author     : Gabii
             //int pidm= Integer.parseInt(request.getParameter("param"));
             //Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser"));
             //int pidm= currentUser.getPIDM();
-            Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser"));
-            int pidm = 0;
-
-            /*if (currentUser != null) {
-                pidm = currentUser.getPIDM();
+            Cookie cookie = null;
+            Cookie[] cookies = null;
+            String pidm = null;
+            String id = null;
+            cookies = request.getCookies();
+            if (cookies != null) {
+                for (int i = 0; i < cookies.length; i++) {
+                    cookie = cookies[i];
+                    if (cookie.getName().equals("pidm")) {
+                        pidm = cookie.getValue();
+                    } else if (cookie.getName().equals("id")) {
+                        id = cookie.getValue();
+                    }
+                }
             } else {
-                currentUser = (Usuario) (session.getAttribute("userSessionUser"));
-                pidm = currentUser.getPIDM();
-            } */
-            pidm = 2401;
-            //pidm = 348249;
-            //pidm = 7683;
-
+                out.println("<h2>No cookies founds</h2>");
+            }
+            String currentUser = pidm;
+            if (currentUser != null) {
+                pidm = Integer.toString(ConstantesForm.pidmUser);
+            }
+            pidm = id;
             int Cod = Integer.parseInt(NombreF);
 
             ResultSet rs = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "'").executeQuery();
@@ -152,7 +162,7 @@ Author     : Gabii
         <ul class="nav nav-tabs" role="tablist">
             <%--<li role="presentation"><a  href="mostrarGRes.jsp" >Volver</a></li>--%>
 
-            <li class="col-md-1" align="center"><button align="center" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Volver"><a href="mostrarGRes.jsp?param="><i class='fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button><li>
+            <li class="col-md-1" align="center"><button align="center" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Volver"><a href="mostrarGRes.jsp"><i class='fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button><li>
                 <br>
         </ul>
 
@@ -440,7 +450,7 @@ Author     : Gabii
                 rs = co.prepareStatement("select * from uzgtrespuestas where codigo_UZGTFORMULARIOS=" + Cod + " and codigo_uzgtformularios_persona=" + fp.getCodFormP() + " and spriden_pidm=" + pidm + " and uzgtrespuestas_iteracion=0 order by codigo_uzgtrespuestas asc").executeQuery();
                 while (rs.next()) {
                     Respuestas res = new Respuestas();
-                    res.setPidm_usuario(pidm);
+                    res.setPidm_usuario(Integer.parseInt(pidm));
                     res.setCodigo_persona(rs.getInt(2));
                     res.setCodigo_formulario(rs.getInt(3));
                     res.setCodigo_grupo(rs.getInt(4));

@@ -47,7 +47,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <!-- <li role="presentation" ><a href="NewForm.jsp"><img src="n.png"/> Nuevo Formulario</a></li> 
          <li role="presentation"><a href="mostrarFormulario.jsp"><img src="m.png"/> Gestión Formulario</a></li>
-         <li role="presentation"><a href="mostrarGRes.jsp?param="><img src="pm.png"/> Formularios Publicados</a></li> -->
+         <li role="presentation"><a href="mostrarGRes.jsp><img src="pm.png"/> Formularios Publicados</a></li> -->
         <li class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="presentation"><a style="color:white" href="mostrarRespuesta.jsp"><i class="fas fa-" style='font-size:24px'>&#xf15c;</i><strong> Respuestas</strong></a></li></br>
 
 

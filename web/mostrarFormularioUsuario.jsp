@@ -1,9 +1,4 @@
-<%--
-    Document   : mostrarFormularioUsuario
-    Created on : 15/03/2018, 11:11:21
-    Author     : DIEGOPC
---%>
-
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Respuestas"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="espe.edu.ec.models.Formulario"%>
@@ -13,224 +8,320 @@
 <%@page import="espe.edu.ec.models.Valores"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.connection.DB"%>
+<%@page import="espe.edu.ec.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="espe.edu.ec.models.Usuario"%> <!-- import de Usuario -->
-<%@page session="true" %> <!-- Se agrega a modo de validacion -->
 
+<!-- import de Usuario -->
+<%@page session="true" %>
 <!DOCTYPE html>
-<% Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser")); //Recibe el atributo de sesion del Servlet
-/*Si el atributo es diferente de nulo muestra la pagina */
-    if (currentUser != null) { %>
+<%
+  Cookie cookie = null;
+  Cookie[] cookies = null;
+  String pidm = null;
+  String id = null;
+  cookies = request.getCookies();
+  if (cookies != null) {
+    for (int i = 0; i < cookies.length; i++) {
+      cookie = cookies[i];
+      if (cookie.getName().equals("pidm")) {
+        pidm = cookie.getValue();
+      } else if (cookie.getName().equals("id")) {
+        id = cookie.getValue();
+      }
+    }
+  } else {
+    out.println("<h2>No cookies founds</h2>");
+  }
+  String currentUser = pidm;
+  if (currentUser != null) { %>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Usuario-Formulario</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script> $(document).ready(function ()
-            {
-                $(
-                        '[data-toggle="tooltip"]'
-                        ).tooltip();
-            });
-        </script>
-        <title>Usuario-Formulario</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
-    <div class="row bg-default">
-        <!-- <div class="col-md-2"><center><img src="Logo_ESPE.png"  WIDTH="160" HEIGHT="100"/></center></div> -->
-        <div class="col-md-8"><center><h1>Servicios</h1></center></div>
-        <div class="col-md-2"></div>
-    </div>
-    <ul class="nav nav-tabs" role="tablist">
-        <!-- <li role="presentation" ><a href="NewForm.jsp"><img src="n.png"/> Nuevo Formulario</a></li> 
-         <li role="presentation"><a href="mostrarFormulario.jsp"><img src="m.png"/> Gestión Formulario</a></li>
-         <li role="presentation"><a href="mostrarGRes.jsp?param="><img src="pm.png"/> Formularios Publicados</a></li> -->
-        <li class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="presentation"><a style="color:white" href="mostrarRespuesta.jsp"><i class="fas fa-" style='font-size:24px'>&#xf15c;</i><strong> Respuestas</strong></a></li></br>
-
-
-    </ul>
-    <%--ESTILOS PARA LA NUEVA TABKLA--%>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
-          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Link de archivos js -->
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
-    crossorigin="anonymous"></script>
-    <script src="js/dataoracle.js"></script>
-    
-    
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Usuario-Formulario</title>
+    <%
+      out.println(ConstantesForm.Css);
+      out.println(ConstantesForm.js);
+    %>
+  </head>
+  <p></p>
+  <!-- --------------------------------Navbar superior-------------------------------------------  -->
+  <div class="container">
+    <nav class="navbar navbar-default" role="tablist">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                  data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><b>Servicios</b> </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li role="presentation">
+              <a href="mostrarRespuesta.jsp">
+                <i class="fas fa-file-archive"></i> Respuestas</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a><% out.print(id);%></a></li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+  </div>
+  <!-- --------------------------------Fin Navbar superior-->
 </head>
-<style>.navbar-custom {
-        color: #58D68D;
-        background-color: #239B56;
-        border-color: #000
-    }</style>
+
 <body>
 
-    <%
-        DB con = DB.getInstancia();
-        Connection co = con.getConnection();
-        LinkedList<Formulario> listaF = new LinkedList<Formulario>();
-        LinkedList<Usuario> listaU = new LinkedList<Usuario>();
-        LinkedList<Respuestas> listaR = new LinkedList<Respuestas>();
-        int Cod = 0;
-        String NombreF = request.getParameter("Submit");
-        if (NombreF != null) {
-            Cod = Integer.parseInt(NombreF);
-        }
-        ResultSet rs = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "'").executeQuery();
-        while (rs.next()) {
-            Formulario F = new Formulario();
-            F.setCodigo_formulario(rs.getInt(1));
-            F.setNombre_formulario(rs.getString(2));
-            F.setDescripcion_formulario(rs.getString(3));
-            F.setFecha_formulario(rs.getDate(4));
-            F.setObjetivo_formulario(rs.getString(5));
-            F.setBase_formulario(rs.getString(6));
-            F.setTipoFormulario(rs.getString(11));
-            listaF.add(F);
-        }
-        rs.close();
+  <%
+    DB con = DB.getInstancia();
+    Connection co = con.getConnection();
+    LinkedList<Formulario> listaF = new LinkedList<Formulario>();
+    LinkedList<Usuario> listaU = new LinkedList<Usuario>();
+    LinkedList<Respuestas> listaR = new LinkedList<Respuestas>();
+    int Cod = 0;
+    String NombreF = request.getParameter("Submit");
+    if (NombreF != null) {
+      Cod = Integer.parseInt(NombreF);
+    }
+    ResultSet rs = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "'").executeQuery();
+    while (rs.next()) {
+      Formulario F = new Formulario();
+      F.setCodigo_formulario(rs.getInt(1));
+      F.setNombre_formulario(rs.getString(2));
+      F.setDescripcion_formulario(rs.getString(3));
+      F.setFecha_formulario(rs.getDate(4));
+      F.setObjetivo_formulario(rs.getString(5));
+      F.setBase_formulario(rs.getString(6));
+      F.setTipoFormulario(rs.getString(11));
+      listaF.add(F);
+    }
+    rs.close();
 
-        /*Recogo los pidm para mostrarlos segun su usuario*/
-        ResultSet rs1 = co.prepareStatement("select * from UTIC.UZGTFORMULARIO_PERSONA P, SATURN.SPRIDEN S "
-                + "WHERE S.SPRIDEN_PIDM = P.SPRIDEN_PIDM "
-                + "AND S.SPRIDEN_CHANGE_IND IS NULL "
-                + "AND P.UZGTFORMULARIOS_ESTADO_LLENADO <> 'N' "
-                + "AND P.codigo_UZGTFORMULARIOS ='" + Cod + "'"
-                + "ORDER BY S.SPRIDEN_LAST_NAME").executeQuery();
-        while (rs1.next()) {
-            Usuario usuario = new Usuario();
-            usuario.setPIDM(rs1.getInt(1));
-            usuario.setEstLn(rs1.getString(6));
-            usuario.setIdEst(rs1.getString(8));
-            usuario.setNombreUsuario(rs1.getString(9) + ' ' + rs1.getString(10));
-            listaU.add(usuario);
-            //JOptionPane.showMessageDialog(null, rs1.getInt(1));
-        }
-        rs1.close();
+    /*Recogo los pidm para mostrarlos segun su usuario*/
+    ResultSet rs1 = co.prepareStatement(
+            "select * from UTIC.UZGTFORMULARIO_PERSONA P, SATURN.SPRIDEN S "
+            + "WHERE S.SPRIDEN_PIDM = P.SPRIDEN_PIDM "
+            + "AND S.SPRIDEN_CHANGE_IND IS NULL "
+            + "AND P.UZGTFORMULARIOS_ESTADO_LLENADO <> 'N' "
+            + "AND P.codigo_UZGTFORMULARIOS ='" + Cod + "'"
+            + "AND ROWNUM <= 2"
+            + "ORDER BY S.SPRIDEN_LAST_NAME").executeQuery();
+    while (rs1.next()) {
+      Usuario usuario = new Usuario();
+      usuario.setPIDM(rs1.getInt(1));
+      usuario.setEstLn(rs1.getString(6));
+      usuario.setIdEst(rs1.getString(8));
+      usuario.setNombreUsuario(rs1.getString(9) + ' ' + rs1.getString(10));
+      listaU.add(usuario);
+    }
+    rs1.close();
 
-        rs1 = co.prepareStatement("SELECT UZGTRESPUESTAS_ITERACION FROM UTIC.UZGTRESPUESTAS WHERE CODIGO_UZGTFORMULARIOS=" + Cod + " GROUP BY UZGTRESPUESTAS_ITERACION order by uzgtrespuestas_iteracion asc").executeQuery();
-        while (rs1.next()) {
-            Respuestas res = new Respuestas();
-            res.setIteracionRespuesta(rs1.getInt(1));
-            listaR.add(res);
-        }
-        rs1.close();
-        rs1.close();
-        if (listaU.isEmpty()) {
-            out.println("<div class=\"row\">");
-            out.println("<div class=\"col-md-3\"></div>");
-            out.println("<div class=\"col-md-6\"><center><h4 class=\"alert alert-success\">" + "No existen Pidms asignados a este formulario" + "</h4></center></div>");
-            out.println("</div>");
-        } else {
-            out.println("<div class=\"row\">");
-            out.println("<div class=\"col-md-3\"></div>");
-            out.println("<div class=\"col-md-6\"><center><h4 class=\"text-uppercase alert alert-success\">" + "Formulario: " + listaF.getFirst().getNombre_formulario() + "</h4></center></div>");
-            out.println("</div>");
-            out.print("<div class=\"row\">");
-            out.print("<div class=\"col-md-3\"></div>");
-            // out.print("<div class=\"col-md-2\"><p name=\"cod\">Codigo Formulario</p></div>");
-            // out.print("<div class=\"col-md-2\"><p name=\"nombre\">Usuario</p></div>");
-            out.print("<div class=\"col-md-1\"><p name=\"pidm\">PIDM</p></div>");
-            out.print("<div class=\"col-md-1\"><p name=\"id\">ID</p></div>");
-            out.print("<div class=\"col-md-3\"><p name=\"nombres\">Nombres</p></div>");
-            out.print("<div class=\"col-md-1\">Opciones</div>");
-            out.print("</div></form>");
-            out.print("<hr>");
-            /*muestro los codigo de formulario, el usuario y su "pidm"*/
+    rs1 = co.prepareStatement("SELECT UZGTRESPUESTAS_ITERACION "
+            + "FROM UTIC.UZGTRESPUESTAS WHERE CODIGO_UZGTFORMULARIOS=" + Cod + " "
+            + "GROUP BY UZGTRESPUESTAS_ITERACION order by uzgtrespuestas_iteracion asc").executeQuery();
+    while (rs1.next()) {
+      Respuestas res = new Respuestas();
+      res.setIteracionRespuesta(rs1.getInt(1));
+      listaR.add(res);
+    }
+    rs1.close();
+    if (listaU.isEmpty()) {
+  %>
+  <div class="container">
+    <div class="alert alert-danger" role="alert">No existen Pidms asignados a este formulario</div>
+  </div>
+  <%} else {
+  %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div> 
+      <div class="col-md-8">
+        <center>
+          <div class="alert alert-success" role="alert">FORMULARIO: <%= listaF.getFirst().getNombre_formulario()%></div>
+        </center>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+  <%
+    rs1 = co.prepareStatement("SELECT UZGTRESPUESTAS_ITERACION "
+            + "FROM UTIC.UZGTRESPUESTAS WHERE CODIGO_UZGTFORMULARIOS=" + Cod + " "
+            + "GROUP BY UZGTRESPUESTAS_ITERACION order by uzgtrespuestas_iteracion asc").executeQuery();
+    while (rs1.next()) {
+      Respuestas res = new Respuestas();
+      res.setIteracionRespuesta(rs1.getInt(1));
+      listaR.add(res);
+    }
+    rs1.close();
+  %>
+  <!--/*muestro los codigo de formulario, el usuario y su "pidm"*/-->
+  <%
+    if (listaF.getFirst().getTipoFormulario().equals("N") || listaF.getFirst().getTipoFormulario().equals("M")) {
+  %>
+  <div class="container">
+    <form action="" method="POST" target="_self" id="mr" style="display:inline;">
 
-            if (listaF.getFirst().getTipoFormulario().equals("N") || listaF.getFirst().getTipoFormulario().equals("M")) {
-                //out.print("<div class=\"col-md-2\"><input type=\"hidden\" name=\"iter\" value='"+listaR.getFirst().getIteracionRespuesta()+"' readonly></div>");
-                for (int i = 0; i < listaU.size(); i++) {
+      <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <!-- <th class="text-center">Codigo Formulario</th> -->
+            <!-- <th class="text-center">Usuario</th> -->
+            <th class="text-center">PIDM</th>
+            <th class="text-center">ID</th>
+            <th class="text-center">Nombres</th>
+            <th class="text-center">Opciones</th>
+          </tr>
+        </thead>
+        <tbody>        
+          <%
+            ResultSet rs2 = co.prepareStatement(
+                    "select * from UTIC.UZGTFORMULARIO_PERSONA P, SATURN.SPRIDEN S "
+                    + "WHERE S.SPRIDEN_PIDM = P.SPRIDEN_PIDM "
+                    + "AND S.SPRIDEN_CHANGE_IND IS NULL "
+                    + "AND P.UZGTFORMULARIOS_ESTADO_LLENADO <> 'N' "
+                    + "AND P.codigo_UZGTFORMULARIOS ='" + Cod + "'"
+                    + "AND ROWNUM <= 300"
+                    + "ORDER BY S.SPRIDEN_LAST_NAME").executeQuery();
+            while (rs2.next()) {
+          %>
+          <tr>
+            <td class="text-center"><input type="text"  class="form-control" name="pidm" value="<%= rs2.getInt(1)%>" readonly>  </td>
+            <td class="text-center"><input type="text"  class="form-control" name="id" value="<%= rs2.getString(8)%>" readonly>  </td>
+            <td class="text-center"><input type="text"  class="form-control" name="nombres" value="<%= rs2.getString(9) + ' ' + rs2.getString(10)%>" readonly> </td>
+            <td>
+              <div class="btn-toolbar text-center" role="toolbar">
+                <div class="row">
+                  <div class="col-md-2 center-block"></div>
+                  <div class="btn-group col-md-8" >
+                    <button type="text" class="btn btn-info form-control" name="Submit" data-toggle="tooltip" data-placement="top" title="Ver"
+                            onclick="this.form.action = 'mostrarRespuestaUsuario.jsp';this.form.submit();" value="<%=Cod%>" >
+                      <span class="fas fa-eye"></span>
+                    </button>
+                    <button type="text" class="btn btn-danger form-control" name="Borrar" data-toggle="tooltip" data-placement="top" title="Borrar"
+                            onclick="this.form.action = 'mostrarRespuestaUsuario.jsp';this.form.submit();" value="<%=Cod%>" >
+                      <span class="fas fa-trash"></span>
+                    </button>
+                  </div>
+                  <div class="col-md-2 center-block"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
 
-                    // out.print("<form action=\"mostrarRespuestaUsuario_1.jsp\" method=\"POST\" target=\"_self\">");
-                    out.print("<form action=\"mostrarRespuestaUsuario.jsp\" method=\"POST\" target=\"_self\">");
-                    out.print("<div class=\"row\">");
-                    out.print("<div class=\"col-xs-3\"></div>");
-                    //out.print("<div class=\"col-md-2\"><input class=\"panel panel-info panel-heading\" size='6' type=\"text\" name=\"cod\" value='"+Cod+"' readonly></div>");
-                    //JOptionPane.showMessageDialog(null, "iteracion: "+listaR.getFirst().getIteracionRespuesta());
-                    //
-                    //out.print("<div class=\"col-md-3\"><input class=\"panel panel-info panel-heading\" size='6' type=\"text\" name=\"nombre\" value='Usuario' readonly></div>");
-                    out.print("<div class=\"col-xs-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"pidm\" value='" + listaU.get(i).getPIDM() + "' readonly></div>");
-                    out.print("<div class=\"col-xs-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"id\" value='" + listaU.get(i).getIdEst() + "' readonly></div>");
-                    out.print("<div class=\"col-xs-3\"><input type=\"text\" style='heigth : 1px' size='60' class=\"form-control input-sm\" name=\"nombres\" value='" + listaU.get(i).getNombreUsuario() + "' readonly></div>");
-                    out.print("<div class=\"col-xs-2\"><button class=\"btn btn-outline-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Submit\" value='" + Cod + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button>");
-                    out.print("<button class=\"btn btn-outline-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Borrar\" class=\"btn btn-xs btn-danger\" type=\"text\" name=\"Borrar\" value='" + Cod + "'><i class=\"fas fa-trash\" style='font-size:20px'></i></button></div>");
-                    out.print("</div></form>");
-                    //JOptionPane.showMessageDialog(null, listaU.get(i).getPIDM()+": "+listaU.size());
-                }//cierra for para mostrar resultados
-            }//cierre if modificable y no modificable
-            if (listaF.getFirst().getTipoFormulario().equals("S")) {
-                int aux = 0;
-                for (int i = 0; i < listaR.size(); i++) {
-                    for (int j = 0; j < listaU.size(); j++) {
-                        if (aux != listaR.get(i).getIteracionRespuesta()) {
-                            if (listaU.get(j).getEstLn().equals("L")) {
-                                // out.print("<form action=\"mostrarRespuestaUsuario_1.jsp\" method=\"POST\" target=\"_self\">");
-                                out.print("<form action=\"mostrarRespuestaUsuario.jsp\" method=\"POST\" target=\"_self\">");
-                                out.print("<div class=\"row\">");
-                                out.print("<div class=\"col-md-3\"></div>");
-                                //out.print("<div class=\"col-md-2\"><input class=\"panel panel-info panel-heading\" size='6' type=\"text\" name=\"cod\" value='"+Cod+"' readonly></div>");
-                                //JOptionPane.showMessageDialog(null, "iteracion: "+listaR.getFirst().getIteracionRespuesta());
-                                //
-                                //out.print("<div class=\"col-md-3\"><input class=\"panel panel-info panel-heading\" size='6' type=\"text\" name=\"nombre\" value='Usuario' readonly></div>");
-                                out.print("<div class=\"col-md-1\"><input type=\"text\" style='heigth : 1px' size='1' class=\"form-control input-sm\" name=\"iter\" value='" + listaR.get(i).getIteracionRespuesta() + "' readonly></div>");
-                                out.print("<div class=\"col-md-1\"><input type=\"text\" style='heigth : 1px' size='5' class=\"form-control input-sm\" name=\"pidm\" value='" + listaU.get(j).getPIDM() + "' readonly></div>");
-                                out.print("<div class=\"col-md-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"id\" value='" + listaU.get(j).getIdEst() + "' readonly></div>");
-                                out.print("<div class=\"col-md-3\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"nombres\" value='" + listaU.get(j).getNombreUsuario() + "' readonly></div>");
-                                out.print("<div class=\"col-md-2\"><button class=\"btn btn-outline-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Submit\" value='" + Cod + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button>");
-                                out.print("<button class=\"btn btn-outline-danger\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Borrar \" class=\"btn btn-xs btn-info\" type=\"text\" name=\"Borrar\" value='" + Cod + "'><i class=\"fas fa-trash\" style='font-size:20px'></i></button>");
-                                out.print("</div>");
-                                out.print("</div></form>");
-                                aux = listaR.get(i).getIteracionRespuesta();
 
-                            }//if llenados
+          <% } %>
 
-                            /*
-                else{
-                    out.println("<div class=\"row\">");
-                    out.println("<div class=\"col-md-3\"></div>");
-                    out.println("<div class=\"col-md-6\"><center><h4 class=\"alert alert-info\">"+"No existen usuarios que hayan llenado este formulario"+"</h4></center></div>");
-                    out.println("</div>");
-                }*/
-                        }
-                    }//cierre for lista pidm
-                }//cierra for para mostrar resultados por iteracion
-            }//cierre del else if secuencial
-        }//cierre de lista usuario con elementos
-        con.closeConexion();
-    %>
+        </tbody>
+      </table>
+    </form> 
+
+  </div>
+  <%
+      rs2.close();
+    }
+    //cierre if modificable y no modificable
+    if (listaF.getFirst().getTipoFormulario().equals("S")) {
+  %>  
+  <div class="container">
+    <form action="" method="POST" target="_self" id="mr" style="display:inline;">
+
+      <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <!-- <th class="text-center">Codigo Formulario</th> -->
+            <!-- <th class="text-center">Usuario</th> -->
+            <th class="text-center">#</th>
+            <th class="text-center">PIDM</th>
+            <th class="text-center">ID</th>            
+            <th class="text-center">Nombres</th>
+            <th class="text-center">Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%
+            int aux = 0;
+            for (int i = 0; i < listaR.size(); i++) {
+              for (int j = 0; j < listaU.size(); j++) {
+                if (aux != listaR.get(i).getIteracionRespuesta()) {
+                  if (listaU.get(j).getEstLn().equals("L")) {
+          %>
+          <tr>
+            <td class="text-center"><input type="text"  class="form-control" name="iter" value="<%= listaR.get(i).getIteracionRespuesta()%>" readonly>  </td>
+            <td class="text-center"><input type="text"  class="form-control" name="pidm" value="<%= listaU.get(j).getPIDM()%>" readonly>  </td>
+            <td class="text-center"><input type="text"  class="form-control" name="id" value="<%= listaU.get(j).getIdEst()%>" readonly> </td>
+            <td class="text-center"><input type="text"  class="form-control" name="nombres" value="<%= listaU.get(j).getNombreUsuario()%>" readonly> </td>
+
+            <td>
+              <div class="btn-toolbar text-center" role="toolbar">
+                <div class="row">
+                  <div class="col-md-2 center-block"></div>
+                  <div class="btn-group col-md-8" >
+                    <button type="text" class="btn btn-info form-control" name="Submit" data-toggle="tooltip" data-placement="top" title="Ver"
+                            onclick="this.form.action = 'mostrarRespuestaUsuario.jsp';this.form.submit();" value="<%=Cod%>" >
+                      <span class="fas fa-eye"></span>
+                    </button>
+                    <button type="text" class="btn btn-danger form-control" name="Borrar" data-toggle="tooltip" data-placement="top" title="Borrar"
+                            onclick="this.form.action = 'mostrarRespuestaUsuario.jsp';this.form.submit();" value="<%=Cod%>" >
+                      <span class="fas fa-trash"></span>
+                    </button>
+                  </div>
+                  <div class="col-md-2 center-block"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <%
+                    aux = listaR.get(i).getIteracionRespuesta();
+
+                  }//if llenados
+
+                  /*
+        else{
+        out.println("<div class=\"row\">");
+        out.println("<div class=\"col-md-3\"></div>");
+        out.println("<div class=\"col-md-6\"><center><h4 class=\"alert alert-info\">"+"No existen usuarios que hayan llenado este formulario"+"</h4></center></div>");
+        out.println("</div>");
+        }*/
+                }
+              }//cierre for lista pidm
+            }
+          %> 
+        </tbody>
+      </table>
+    </form> 
+
+  </div>
+  <%
+//cierra for para mostrar resultados por iteracion
+      }//cierre del else if secuencial
+    }//cierre de lista usuario con elementos
+    con.closeConexion();
+  %>
 </body>
-
+</html>
 <% } else {
+
 %>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="css/bootstrap.min.css" rel="stylesheet"></link>
-        <title>No Autorizado</title>
-    </head>
-    <body>
-        <ul class="nav nav-tabs" role="tablist">
 
-
-
-
-            <div class="col-md-4">Error! Usuario no autorizado</div>
-
-    </ul>
-    
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="css/bootstrap.min.css" rel="stylesheet"></link>
+    <title>No Autorizado</title>
+  </head>
+  <body>
+    <ul class="nav nav-tabs" role="tablist">
+      <div class="col-md-4">Error! Usuario no autorizado</div>
+    </form>
+  </ul>
 </body>
 </html>
 

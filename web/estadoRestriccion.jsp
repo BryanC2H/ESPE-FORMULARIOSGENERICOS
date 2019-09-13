@@ -4,6 +4,7 @@
     Author     : Tefii
 --%>
 
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="espe.edu.ec.models.Valores"%>
@@ -18,35 +19,38 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <title>Estado Restriccion</title>
+        <title>Estado Restriccion</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <%
+            out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
     </head>
     <body>
-	<%@page import="org.apache.log4j.Logger"%>
+        <%@page import="org.apache.log4j.Logger"%>
         <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
         <%logger.info("esta es la prueba."); %>
         <%logger.debug("Demostracion del mensaje");%>
         <%logger.warn("Show WARN message");%>
         <%logger.error("Show ERROR message");%>
         <%logger.fatal("Show FATAL message"); %>
+       
         <%
             try {
 
         %> 
         <div>
             <div class="row bg-default">
-            <!--<div class="col-md-2"><center><img src="espelogo.jpg"/></center></div>-->
-            <div class="col-md-8"><center><h1>Gestión de Formularios</h1></center></div>
-            <div class="col-md-2"></div>
-        </div>
-        <ul class="nav nav-tabs" role="tablist">
-               <li role="presentation"><a href="publicarUsuario.jsp">Volver</a></li>
+                <!--<div class="col-md-2"><center><img src="espelogo.jpg"/></center></div>-->
+                <div class="col-md-8"><center><h1>Gestión de Formularios</h1></center></div>
+                <div class="col-md-2"></div>
+            </div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a href="publicarUsuario.jsp">Volver</a></li>
             </ul>
         </div>
-        <% 
-            DB con = DB.getInstancia();
+        <%            DB con = DB.getInstancia();
             Connection co = con.getConnection();
             LinkedList<Formulario> listaF = new LinkedList<Formulario>();
             LinkedList<Grupo> listaG = new LinkedList<Grupo>();
@@ -55,9 +59,8 @@
             LinkedList<Valores> listaV = new LinkedList<Valores>();
             String NombreF = request.getParameter("Submit");
             int Cod = Integer.parseInt(NombreF);
-            ResultSet rs = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS WHERE codigo_UZGTFORMULARIOS = '"+Cod+"'").executeQuery();
-            while(rs.next())
-            {
+            ResultSet rs = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "'").executeQuery();
+            while (rs.next()) {
                 Formulario F = new Formulario();
                 F.setCodigo_formulario(rs.getInt(1));
                 F.setNombre_formulario(rs.getString(2));
@@ -68,9 +71,8 @@
                 listaF.add(F);
             }
             rs.close();
-            rs = co.prepareStatement("SELECT * FROM UTIC.UZGTGRUPO WHERE codigo_UZGTFORMULARIOS = '"+Cod+"' order by codigo_UZGTGRUPO ASC").executeQuery();
-            while(rs.next())
-            {
+            rs = co.prepareStatement("SELECT * FROM UTIC.UZGTGRUPO WHERE codigo_UZGTFORMULARIOS = '" + Cod + "' order by codigo_UZGTGRUPO ASC").executeQuery();
+            while (rs.next()) {
                 Grupo G = new Grupo();
                 G.setCodigo_formulario(rs.getInt(1));
                 G.setCodigo_grupo(rs.getInt(2));
@@ -79,21 +81,19 @@
                 listaG.add(G);
             }
             rs.close();
-            rs = co.prepareStatement("SELECT * FROM UTIC.UZGTPREGUNTAS WHERE codigo_UZGTFORMULARIOS = '"+Cod+"' order by codigo_UZGTPREGUNTAS ASC").executeQuery();
-            while(rs.next())
-            {
-               Preguntas P = new Preguntas();
-               P.setCodigo_formulario(rs.getInt(1));
-               P.setCodigo_grupo(rs.getInt(2));
-               P.setCodigo_preguntas(rs.getInt(3));
-               P.setCodigo_tipo_pregunta(rs.getInt(7));
-               P.setLabel_pregunta(rs.getString(8));
-               listaP.add(P);
+            rs = co.prepareStatement("SELECT * FROM UTIC.UZGTPREGUNTAS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "' order by codigo_UZGTPREGUNTAS ASC").executeQuery();
+            while (rs.next()) {
+                Preguntas P = new Preguntas();
+                P.setCodigo_formulario(rs.getInt(1));
+                P.setCodigo_grupo(rs.getInt(2));
+                P.setCodigo_preguntas(rs.getInt(3));
+                P.setCodigo_tipo_pregunta(rs.getInt(7));
+                P.setLabel_pregunta(rs.getString(8));
+                listaP.add(P);
             }
             rs.close();
-            rs = co.prepareStatement("SELECT * FROM UTIC.UZGTVALORES WHERE codigo_UZGTFORMULARIOS = '"+Cod+"' order by codigo_UZGTVALORES").executeQuery();
-            while(rs.next())
-            {
+            rs = co.prepareStatement("SELECT * FROM UTIC.UZGTVALORES WHERE codigo_UZGTFORMULARIOS = '" + Cod + "' order by codigo_UZGTVALORES").executeQuery();
+            while (rs.next()) {
                 Valores Val = new Valores();
                 Val.setCodigo_Valores(rs.getInt(1));
                 Val.setCodig_Formularios(rs.getInt(2));
@@ -108,29 +108,25 @@
             out.print(query);
             ///////////////////////////////////////////////////////////////////////////////
             /*INSERT RESTRICCION*/
-             try
-            {
+            try {
                 //String sql= "INSERT INTO UTIC.UZGTFORMULARIO_PERSONA (SPRIDEN_PIDM,CODIGO_UZGTFORMULARIOS_PERSONA,CODIGO_UZGTFORMULARIOS,UZGTFORMULARIOS_PERSONA_FECHA) VALUES (?,?,?,?)";
                 PreparedStatement ps = co.prepareStatement(query);
                 ps.executeUpdate();
                 out.println("INSERT RESTRICCION");
-             }
-               //out.println("<center><div class=\"alert alert-success\"><strong>Exito!</strong> Se Guardo correctamente</div></center>");
-
-            catch (Exception ex)
-            {
-                out.println("ERROR INSERT RESTRICCION"+ex);
+            } //out.println("<center><div class=\"alert alert-success\"><strong>Exito!</strong> Se Guardo correctamente</div></center>");
+            catch (Exception ex) {
+                out.println("ERROR INSERT RESTRICCION" + ex);
             }
             out.print("<form action=\"\" method=\"POST\" target=\"_self\" style=\"display:inline;\">");
-            out.println("<br><div class=\"col-md-10\"><center><button class=\"btn btn-default\" type=\"submit\" name=\"Submit\" onclick=\"this.form.action='publicarUsuario.jsp';this.form.submit();\" value=\""+Cod+"\">Volver</button></center></div>");
+            out.println("<br><div class=\"col-md-10\"><center><button class=\"btn btn-default\" type=\"submit\" name=\"Submit\" onclick=\"this.form.action='publicarUsuario.jsp';this.form.submit();\" value=\"" + Cod + "\">Volver</button></center></div>");
             out.print("</div></form>");
             con.closeConexion();
         %>
-	<%             } catch (Exception e) {
+        <%             } catch (Exception e) {
                 System.out.println("error." + e.getMessage());
 
             }
         %>
-        
+
     </body>
 </html>

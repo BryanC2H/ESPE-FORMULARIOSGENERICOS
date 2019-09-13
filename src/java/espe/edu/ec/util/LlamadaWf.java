@@ -120,7 +120,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 23),NULL) AS NIVEL,\n"
-                            + "NVL((SELECT DISTINCT SUBSTR(UZGTRESPUESTAS_VALOR,1,6)\n"
+                            + "NVL((SELECT DISTINCT TRIM(SUBSTR(UZGTRESPUESTAS_VALOR,1,6))\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
@@ -134,8 +134,8 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTPREGUNTAS = 24),NULL) AS RAZON\n"
                             + "FROM UTIC.UZGTRESPUESTAS R\n"
                             + "WHERE R.SPRIDEN_PIDM = " + usPidm + "\n"
-                            + "AND R.CODIGO_UZGTFORMULARIOS = " + Cod + "\n"
-                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MIN(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
+                            + " AND R.CODIGO_UZGTFORMULARIOS = " + Cod + "\n"
+                            + " AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MAX(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)").executeQuery();
 
@@ -150,19 +150,31 @@ public class LlamadaWf {
                         Periodo = rs.getString(8);
                         Razon = rs.getString(9);
                     }
+                    
                     co.close();
-
+                    
+                  /*  coWF.prepareStatement("CALL WFOBJECTS.WZWKREPORT.p_EstadoMatriWEB(" + usPidm + ",'" + Periodo + "'" + ",'" + Nivel + "'"
+                    + ",'" + Carrera.subSequence(0, 9)+"')").executeQuery();*/
+                    
+                /*    co.prepareStatement(" UPDATE SATURN.SGBSTDN SET SGBSTDN_STYP_CODE='W'  "
+                            + "WHERE SGBSTDN_TERM_CODE_EFF=(SELECT MAX(SGBSTDN_TERM_CODE_EFF) FROM SGBSTDN "
+                            + "WHERE SGBSTDN_PIDM = "+usPidm+" AND SGBSTDN_PROGRAM_1 ='"+Carrera.subSequence(0, 9)
+                            + "' AND SGBSTDN_LEVL_CODE= '"+Nivel+"' AND SGBSTDN_STYP_CODE IN ('C','Z','N'))"
+                            + "AND SGBSTDN_PIDM ="+usPidm+" AND SGBSTDN_PROGRAM_1 ='"+Carrera.subSequence(0, 9)
+                            + "' AND SGBSTDN_LEVL_CODE= '"+Nivel+"' AND SGBSTDN_STYP_CODE IN ('C','Z','N')").executeUpdate();*/
+                    
+                               
                     coWF.prepareStatement("CALL WFOBJECTS.WFK_SOLICITUDES.p_EVENTO_GENERAL(" + usPidm + ",'" + Id + "'" + ",'" + Cedula + "'"
                             + ",'" + Nombres + "'" + ",'" + Email + "'" + ",'" + Carrera.subSequence(0, 9) + "'" + ",'" + Campus.substring(0, 2) + "'" + ",'" + Nivel + "'"
                             + ",'" + Periodo + "'" + ",'" + Nrc + "'" + ",'" + Actividad + "'" + ",'" + Razon + "'" + ",'" + Email2 + "'" + ",'" + Nrc2 + "'"
                             + ",'" + Nrc3 + "'" + ",'" + Nrc4 + "'" + ",'" + Nrc5 + "'" + ",'" + CHR1 + "'" + ",'" + CHR2 + "'" + ",'" + CHR3 + "'" + ",'" + CHR4 + "'"
                             + ",'" + CHR5 + "'" + "," + int1 + "," + int2 + "," + int3 + "," + int4 + "," + int5 + ")").executeQuery();
-
+              
                     String par_mensaje = " el formulario " + Cod + " " + Actividad + " fue llenado";
                     String par_emailp = "auditoria_sis@espe.edu.ec";
-                    String par_mensajeprincipal = " al Director de Carrera";
+                    String par_mensajeprincipal = " espere por favor una hora y podrá realizar su matricula";
                     String par_notificacion1 = " del Campus " + Campus + " y Carrera " + Carrera + ", por la siguiente Razon: " + Razon;
-                    String par_notificacion2 = " la solicitud fue enviada ";
+                    String par_notificacion2 = " la solicitud será procesada ";
 
                     coWF.prepareStatement("CALL wfobjects.wzwkreport.P_Envio_Emails('" + par_mensaje + "'" + ",'" + Cedula + "'" + ",'" + Nombres + "'"
                             + ",'" + Email + "'" + ",'" + par_emailp + "'" + ",'" + par_mensajeprincipal + "'" + ",'" + par_notificacion1 + "'" + ",'" + par_notificacion2 + "'"
@@ -229,7 +241,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 35),NULL) AS PERIODO,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -243,7 +255,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 35)),'0') AS NRC,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -257,7 +269,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 35)),'0') AS NRC2,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -271,7 +283,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 35)),'0') AS NRC3,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -285,7 +297,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 35)),'0') AS NRC4,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -301,9 +313,13 @@ public class LlamadaWf {
                             + "FROM UTIC.UZGTRESPUESTAS R\n"
                             + "WHERE R.SPRIDEN_PIDM = " + usPidm + "\n"
                             + "AND R.CODIGO_UZGTFORMULARIOS = " + Cod + "\n"
-                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MIN(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
+                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MAX(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
-                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)").executeQuery();
+                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)\n"
+                            + "AND R.UZGTRESPUESTAS_ITERACION = (SELECT MAX(UZGTRESPUESTAS_ITERACION) FROM UTIC.UZGTRESPUESTAS\n"
+                            + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
+                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
+                            + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA)").executeQuery();
 
                     if (rs3.next()) {
                         Id = rs3.getString(1);
@@ -424,7 +440,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 130),NULL) AS RAZON,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -438,7 +454,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 128)),'0') AS NRC,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -452,7 +468,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 128)),'0') AS NRC2,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -466,7 +482,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 128)),'0') AS NRC3,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -480,7 +496,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 128)),'0') AS NRC4,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -496,9 +512,9 @@ public class LlamadaWf {
                             + "FROM UTIC.UZGTRESPUESTAS R\n"
                             + "WHERE R.SPRIDEN_PIDM = " + usPidm + "\n"
                             + "AND R.CODIGO_UZGTFORMULARIOS = " + Cod + "\n"
-                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MIN(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
+                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MAX(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
-                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)").executeQuery();
+                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)\n").executeQuery();
 
                     if (rs7.next()) {
                         Id = rs7.getString(1);
@@ -659,7 +675,7 @@ public class LlamadaWf {
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
                             + "AND CODIGO_UZGTPREGUNTAS = 140),NULL) AS PERIODO,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR || '-'|| SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB\n"
-                            + "FROM UTIC.UZGTRESPUESTAS, SSBSECT \n"
+                            + "FROM UTIC.UZGTRESPUESTAS, SATURN.SSBSECT \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
@@ -675,9 +691,13 @@ public class LlamadaWf {
                             + "FROM UTIC.UZGTRESPUESTAS R\n"
                             + "WHERE R.SPRIDEN_PIDM = " + usPidm + "\n"
                             + "AND R.CODIGO_UZGTFORMULARIOS = " + Cod + "\n"
-                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MIN(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
+                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MAX(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
-                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)").executeQuery();
+                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)\n"
+                            + "AND R.UZGTRESPUESTAS_ITERACION = (SELECT MAX(UZGTRESPUESTAS_ITERACION) FROM UTIC.UZGTRESPUESTAS\n"
+                            + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
+                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
+                            + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA)").executeQuery();
 
                     if (rs8.next()) {
                         Id = rs8.getString(1);
@@ -721,7 +741,7 @@ public class LlamadaWf {
             } //case8
 
             //case 11 levantamiento de impedimentos
-            case 11: {
+            case 28: {
 
                 try {
 
@@ -733,115 +753,119 @@ public class LlamadaWf {
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 193),NULL) AS ID,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 320),NULL) AS ID,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 194),NULL) AS CEDULA,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 321),NULL) AS CEDULA,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 192),NULL) AS NOMBRES,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 319),NULL) AS NOMBRES,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 195),NULL) AS EMAIL,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 322),NULL) AS EMAIL,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 196),NULL) AS EMAIL2,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 323),NULL) AS EMAIL2,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 197),NULL) AS CARRERA,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 324),NULL) AS CARRERA,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 198),NULL) AS CAMPUS,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 325),NULL) AS CAMPUS,\n"
                             + "NVL((SELECT DISTINCT SUBSTR(UZGTRESPUESTAS_VALOR,1,35)\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 205),NULL) AS NIVEL,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 332),NULL) AS NIVEL,\n"
                             + "NVL((SELECT DISTINCT SUBSTR(UZGTRESPUESTAS_VALOR,1,40)\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 206),NULL) AS PERIODO,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 333),NULL) AS PERIODO,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 207),NULL) AS RAZON1,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 334),NULL) AS RAZON1,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 208),NULL) AS RAZON2,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 335),NULL) AS RAZON2,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 200),NULL) AS COHORTE,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 327),NULL) AS COHORTE,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 201),NULL) AS CATALOGO,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 328),NULL) AS CATALOGO,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 202),NULL) AS CREDAPRO,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 329),NULL) AS CREDAPRO,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 203),NULL) AS CREDCAR,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 330),NULL) AS CREDCAR,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 204),NULL) AS CREDHIS,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 331),NULL) AS CREDHIS,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 209),NULL) AS CAMBCAR,\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 336),NULL) AS CAMBCAR,\n"
                             + "NVL((SELECT DISTINCT UZGTRESPUESTAS_VALOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS \n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
                             + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
                             + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA\n"
-                            + "AND CODIGO_UZGTPREGUNTAS = 210),NULL) AS DATCOR\n"
+                            + "AND CODIGO_UZGTPREGUNTAS = 337),NULL) AS DATCOR\n"
                             + "FROM UTIC.UZGTRESPUESTAS R\n"
                             + "WHERE R.SPRIDEN_PIDM = " + usPidm + "\n"
                             + "AND R.CODIGO_UZGTFORMULARIOS = " + Cod + "\n"
-                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MIN(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
+                            + "AND R.CODIGO_UZGTFORMULARIOS_PERSONA = (SELECT MAX(CODIGO_UZGTFORMULARIOS_PERSONA) FROM UTIC.UZGTRESPUESTAS\n"
                             + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
-                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)").executeQuery();
+                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS)\n"
+                            + "AND R.UZGTRESPUESTAS_ITERACION = (SELECT MAX(UZGTRESPUESTAS_ITERACION) FROM UTIC.UZGTRESPUESTAS\n"
+                            + "WHERE SPRIDEN_PIDM = R.SPRIDEN_PIDM\n"
+                            + "AND CODIGO_UZGTFORMULARIOS = R.CODIGO_UZGTFORMULARIOS\n"
+                            + "AND CODIGO_UZGTFORMULARIOS_PERSONA = R.CODIGO_UZGTFORMULARIOS_PERSONA)").executeQuery();
 
                     if (rs.next()) {
                         Id = rs.getString(1);

@@ -4,6 +4,7 @@
     Author     : D4ve
 --%>
 
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Usuario"%>
 <%@page import="espe.edu.ec.connection.DB2"%>
 <%@page import="javax.swing.JOptionPane"%>
@@ -12,7 +13,7 @@
 <%@page import="espe.edu.ec.models.Formulario"%>
 <%@page import="espe.edu.ec.connection.DB"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="Decrypt.DecryptSmAtrix"%>
+<%@page import="espe.edu.ec.decrypt.DecryptSmAtrix"%>
 <%@page import="java.util.logging.Level"%>
 <%@page import="java.util.logging.Logger"%>
 <%@page import="espe.edu.ec.models.Respuestas"%>
@@ -20,20 +21,17 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="espe.edu.ec.models.Valores"%>
-<%@page import="espe.edu.ec.models.FileUpload"%> 
+<%@page import="espe.edu.ec.util.FileUpload"%> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>  
     <head>
         <meta http-equiv="Content-Type" content="text/html" charset=UTF-8">
         <title>Mostrar-Formularios</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        
+        <%
+            out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
         <script> $(document).ready(function ()
             {
                 $(
@@ -44,65 +42,77 @@
 
 
         <%
-            Usuario currentUser = (Usuario) (session.getAttribute("userSessionUser"));
             Logger LOGGER = Logger.getLogger("bitacora.subnivel.Control");
-            // int PIDMget = 0;
 
-            int PIDMget = 2401;
-            
-            //int PIDMget = 348249;
-            //int PIDMget = 7683;
-            String param = "bccd67a1d7973a4109ab65c82680c115";
-
-            try {
-                DecryptSmAtrix dec = new DecryptSmAtrix();
-                String id = request.getParameter("param");
-                //String id = "L00347668";
-                //String id = "L00368786";
-
-                LOGGER.log(Level.INFO, "MOSTRAR GRES ID: ", id);
-                if (id.length() > 0) {
-                    //JOptionPane.showMessageDialog(null, "entro al if");   
-                    id = new String(dec.decrypt(id));
-
-                    LOGGER.log(Level.INFO, "MOSTRAR GRES ID: ", id);
-                    DB2 conn = DB2.getInstancia();
-                    Connection coo = conn.getConnection();
-
-                    // JOptionPane.showMessageDialog(null, "PIDM: "+user.getPIDM());
-                    ResultSet res = coo.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM as estPIDM FROM SPRIDEN WHERE SPRIDEN.SPRIDEN_ID = '" + id + "' AND SPRIDEN.SPRIDEN_CHANGE_IND IS NULL").executeQuery();
-                    LOGGER.log(Level.INFO, "MOSTRAR GRES res: ", res);
-                    if (res.next()) {
-                        LOGGER.log(Level.INFO, "MOSTRAR GRES res: ", res);
-                        PIDMget = res.getInt(1);
+            Cookie cookie = null;
+            Cookie[] cookies = null;
+            String pidm = null;
+            String id = null;
+            cookies = request.getCookies();
+            if (cookies != null) {
+                for (int i = 0; i < cookies.length; i++) {
+                    cookie = cookies[i];
+                    if (cookie.getName().equals("pidm")) {
+                        pidm = cookie.getValue();
+                    } else if (cookie.getName().equals("id")) {
+                        id = cookie.getValue();
                     }
-                    conn.closeConexion();
-                } else {
-
-                    PIDMget = currentUser.getPIDM();
-                    LOGGER.log(Level.INFO, "MOSTRAR GRES PIDMget:  ", PIDMget);
-
                 }
-            } catch (Exception e) {
-                LOGGER.log(Level.WARNING, "MOSTRAR GRES ", e);
-
+            } else {
+                out.println("<h2>No cookies founds</h2>");
             }
+            String currentUser = pidm;
+            if (currentUser != null) {
+                int PIDMget = 0;
 
-            // JOptionPane.showMessageDialog(null, "PIDM: "+PIDMget);
+                try {
+                    DecryptSmAtrix dec = new DecryptSmAtrix();
+                    id = request.getParameter("param");
+                    if (currentUser == null && id.isEmpty()) {
+                        LOGGER.log(Level.INFO, "MOSTRAR GRES ID: " + id);
+                        if (id.length() > 0) {
+                            //JOptionPane.showMessageDialog(null, "entro al if");   
+                            id = new String(dec.decrypt(id));
+
+                            LOGGER.log(Level.INFO, "MOSTRAR GRES ID: " + id);
+                            DB2 conn = DB2.getInstancia();
+                            Connection coo = conn.getConnection();
+
+                            // JOptionPane.showMessageDialog(null, "PIDM: "+user.getPIDM());
+                            ResultSet res = coo.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM as estPIDM FROM SPRIDEN WHERE SPRIDEN.SPRIDEN_ID = '" + id + "' AND SPRIDEN.SPRIDEN_CHANGE_IND IS NULL").executeQuery();
+                            LOGGER.log(Level.INFO, "MOSTRAR GRES res: " + res);
+                            if (res.next()) {
+                                LOGGER.log(Level.INFO, "MOSTRAR GRES res: " + res);
+                                PIDMget = res.getInt(1);
+                            }
+                            conn.closeConexion();
+                        } else {
+
+                            PIDMget = Integer.parseInt(id);
+                            LOGGER.log(Level.INFO, "MOSTRAR GRES PIDMget:  " + PIDMget);
+
+                        }
+                    } else {
+                        PIDMget = 2401;
+                        //int PIDMget = 348249;
+                        //int PIDMget = 7683;
+                        String param = "bccd67a1d7973a4109ab65c82680c115";
+                        id = "L00347668";
+                        //String id = "L00368786";
+                    }
+
+                } catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "MOSTRAR GRES ", e);
+                }
         %>
     </head>
     <body>
-        <%LOGGER.info("esta es la prueba."); %>
 
 
         <%             try {
 
         %>
-        <style>.navbar-custom {
-                color: #58D68D;
-                background-color: #239B56 ;
-                border-color: #000
-            }</style>
+
 
 
         </br></br></br>
@@ -110,7 +120,7 @@
 
             <%        out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white;\"  href=\"NewForm.jsp\"><i class=\"fas fa-\" style='font-size:24px'>&#xf0fe;</i><strong> Nuevo </strong></a></li>");
                 out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white;\" href=\" mostrarFormulario.jsp\"><i class=\"fas fa-tools\" style='font-size:24px'></i><strong> Gestión </strong></a></li>");
-                //out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white;\" href=\"mostrarGRes.jsp?param=\"null\"\"><i class=\"fas fa-chalkboard-teacher\" style='font-size:24px'></i>&nbsp<strong>Publicados</strong></a></li>");
+                //out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white;\" href=\"mostrarGRes.jsp\"null\"\"><i class=\"fas fa-chalkboard-teacher\" style='font-size:24px'></i>&nbsp<strong>Publicados</strong></a></li>");
                 out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white ;\" href=\"mostrarRespuesta.jsp\"><i class=\"fas fa-\" style='font-size:24px'>&#xf15c;</i><strong> Respuestas</strong></a></li></br>");
             %>
 
@@ -324,7 +334,7 @@
 </div>   
 <%
     LinkedList<Formulario> listaF5 = new LinkedList<Formulario>();
-    ResultSet rs5 = co.prepareStatement("SELECT DISTINCT F.CODIGO_UZGTFORMULARIOS, F.UZGTFORMULARIOS_NOMBRE FROM UTIC.UZGTFORMULARIOS F JOIN UTIC.UZGTFORMULARIO_PERSONA FP ON F.CODIGO_UZGTFORMULARIOS = FP.CODIGO_UZGTFORMULARIOS WHERE FP.UZGTFORMULARIOS_ESTADO_LLENADO ='L' AND FP.SPRIDEN_PIDM ="+ PIDMget +" ORDER BY F.codigo_UZGTFORMULARIOS ASC").executeQuery();
+    ResultSet rs5 = co.prepareStatement("SELECT DISTINCT F.CODIGO_UZGTFORMULARIOS, F.UZGTFORMULARIOS_NOMBRE FROM UTIC.UZGTFORMULARIOS F JOIN UTIC.UZGTFORMULARIO_PERSONA FP ON F.CODIGO_UZGTFORMULARIOS = FP.CODIGO_UZGTFORMULARIOS WHERE FP.UZGTFORMULARIOS_ESTADO_LLENADO ='L' AND FP.SPRIDEN_PIDM =" + PIDMget + " ORDER BY F.codigo_UZGTFORMULARIOS ASC").executeQuery();
     while (rs5.next()) {
         Formulario F5 = new Formulario();
         F5.setCodigo_formulario(rs5.getInt(1));

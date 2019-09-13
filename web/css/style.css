@@ -1,7 +1,43 @@
 div.container {
-  width: 80%;
+    width: 80%;
 }
 
 .centre {
-  text-align: center;
+    text-align: center;
+}
+.navbar-default {
+    background-color: #00713d;
+    border-color: #00713d;
+
+}
+.navbar-default .navbar-brand {
+    color: #00713d;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: #00713d;
+    background-color: transparent;
+}
+.navbar-default .navbar-text {
+    color: #000000;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #000000;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus + i{
+    color: #ffffff;
+    background-color: #2d6b4e;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color: #2d6b4e;
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: #00713d;
 }
