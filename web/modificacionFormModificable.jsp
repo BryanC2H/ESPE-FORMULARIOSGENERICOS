@@ -1,9 +1,3 @@
-<%-- 
-    Document   : modificado.jsp
-    Created on : 08/01/2018, 10:10:01
-    Author     : DIEGOPC
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -110,13 +104,6 @@
         %>  
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
         <%
             try {
 

@@ -1,9 +1,4 @@
-<%-- 
-    Document   : mostrarRespuestaUsuario
-    Created on : 15/03/2018, 12:52:15
-    Author     : DIEGOPC
---%>
-
+<%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="espe.edu.ec.util.BorrarFormulario"%>
 <%@page import="espe.edu.ec.models.FormPersona"%>
@@ -26,29 +21,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Formulario-Respuesta</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script> $(document).ready(function ()
-            {
-                $(
-                        '[data-toggle="tooltip"]'
-                        ).tooltip();
-            });
-        </script>
+        <%      out.println(ConstantesForm.Css);
+            out.println(ConstantesForm.js);
+        %>
     </head>
     <body>
-	<%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-        
+	        
         <%             try{
             
         

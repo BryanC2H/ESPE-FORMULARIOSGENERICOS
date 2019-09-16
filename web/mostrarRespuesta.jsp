@@ -1,20 +1,13 @@
-<%-- 
-    Document   : mostrarFormulario
-    Created on : 14-ene-2018, 21:55:20
-    Author     : D4ve
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="espe.edu.ec.models.Formulario"%>
 <%@page import="espe.edu.ec.connection.DB"%>
-<%@page import="espe.edu.ec.util.LoginServlet"%>"
+<%@page import="espe.edu.ec.util.LoginServlet"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.models.Usuario"%> <!-- import de Usuario -->
 <%@page session="true" %> <!-- Se agrega a modo de validacion -->
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
@@ -37,7 +30,6 @@
     }
     String currentUser = pidm;
     if (currentUser != null) { %>
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html" charset=UTF-8">
@@ -47,7 +39,6 @@
             out.println(ConstantesForm.js);
         %>
     </head>
-
     <body>
         <div class="container">
             <nav class="navbar navbar-default" role="tablist">
@@ -75,7 +66,7 @@
                         </li>
                         <li role="presentation">
                             <a href="mostrarGRes.jsp">
-                               <i class="fas fa-chalkboard-teacher"></i> Publicados</a>
+                                <i class="fas fa-chalkboard-teacher"></i> Publicados</a>
                         </li>
                         <!--<li role="presentation">
                             <a href="mostrarRespuesta.jsp">
@@ -86,110 +77,101 @@
                         <li><a><% out.print(id);%></a></li>
                     </ul> 
                 </div><!-- /.navbar-collapse -->
-
             </nav>
         </div>
         <!-- --------------------------------Fin Navbar superior-------------------------------------------  -->
     <center> 
-        <form action="LoginServlet" method="POST" >
-
+        <form action="LoginServlet" class="form-horizontal" method="POST" >
             <div class="container">
-                <table id="example" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th class="text-center">CODIGO</th>
-                            <th class="text-center">NOMBRE</th>
-                            <th class="text-center">OPCIONES</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            DB con = DB.getInstancia();
-                            Connection co = con.getConnection();
-
-                            PreparedStatement st;
-                            ResultSet ts;
-                            st = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS ORDER BY codigo_UZGTFORMULARIOS ASC");
-                            ts = st.executeQuery();
-                            //      Formularios_Connection con = F
-                            while (ts.next()) {
-                                String cod = "";
-                        %>
-
-                    <form action="" method="POST" target="_self" id="mr" style="display:inline;">
-
-
-                        <tr>
-                            <td class="text-center"><%= ts.getInt("CODIGO_UZGTFORMULARIOS")%> </td>
-                            <td class="text-center"><%= ts.getString("UZGTFORMULARIOS_NOMBRE")%> </td>
-                            <td>
-                                <div class="btn-toolbar text-center" role="toolbar">
-                                    <div class="row">
-                                        <div class="col-md-4 center-block"></div>
-                                        <div class="btn-group col-md-12">
-                                            <center><div class="col-md-1"><button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Ver" class="btn btn-default" type="text" name="Submit" onclick="this.form.action = 'mostrarFormularioUsuario.jsp';this.form.submit();" value="<%= ts.getInt("CODIGO_UZGTFORMULARIOS")%>"><i class="fas fa-eye" style='font-size:20px'></i></button></div></center>
-                                        </div>
-                                        <div class="col-md-4 center-block"></div>
+                <form action="" method="POST" target="_self" id="mr" style="display:inline;">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group has-success has-feedback">
+                                <label class="control-label col-sm-3" for="inputGroupSuccess2">Búsqueda por ID:</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fab fa-digital-ocean"></i></span>
+                                        <input type="text"  class="form-control" name="idbusqueda" value="" required></span>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                    </form> 
-                    <% }
-                        ts.close();
-                        con.closeConexion();
-                    %> 
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                    </div>
+                    <table id="example" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">CODIGO</th>
+                                <th class="text-center">NOMBRE</th>
+                                <th class="text-center">OPCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                DB con = DB.getInstancia();
+                                Connection co = con.getConnection();
 
-        </form>  
-    </center>
-</body>
-</html>
+                                PreparedStatement st;
+                                ResultSet ts;
+                                st = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS ORDER BY codigo_UZGTFORMULARIOS ASC");
+                                ts = st.executeQuery();
+                                //      Formularios_Connection con = F
+                                while (ts.next()) {
+                                    String cod = "";
+                            %>
+                            <tr>
+                                <td class="text-center"><%= ts.getInt("CODIGO_UZGTFORMULARIOS")%> </td>
+                                <td class="text-center"><%= ts.getString("UZGTFORMULARIOS_NOMBRE")%> </td>
+                                <td>
+                                    <div class="btn-toolbar text-center" role="toolbar">
+                                        <div class="row">
+                                            <div class="col-md-4 center-block"></div>
+                                            <div class="btn-group col-md-12">
+                                                <center><div class="col-md-1"><button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Ver" class="btn btn-default" type="submit" name="Submit" onclick="this.form.action = 'mostrarFormularioUsuario.jsp';this.form.submit();" value="<%= ts.getInt("CODIGO_UZGTFORMULARIOS")%>"><i class="fas fa-eye" style='font-size:20px'></i></button></div></center>
+                                            </div>
+                                            <div class="col-md-4 center-block"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </form> 
+                            <% }
+                                ts.close();
+                                con.closeConexion();
+                            %> 
+                        </tbody>
+                    </table>
+                </form>  
+                </center>
+                </body>
+                </html>
+                <% } else {
+                %>
+                <html>
+                    <head>
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                        <%      out.println(ConstantesForm.Css);
+                            out.println(ConstantesForm.js);
+                        %>
+                        <title>No Autorizado</title>
+                    </head>
+                    <body>
+                       
+                        <%
+                            try {
+                        %>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <div class="col-md-4">Error! Usuario no autorizado</div>
+                            </form>
+                        </ul>
+                        <%             } catch (Exception e) {
+                                System.out.println("error." + e.getMessage());
 
-<% } else {
-
-%>
-
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <%  out.println(ConstantesForm.Css);
-            out.println(ConstantesForm.js);
-        %>
-        <title>No Autorizado</title>
-    </head>
-    <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-        <%             try {
-
-        %>
-        <ul class="nav nav-tabs" role="tablist">
-
-
-
-
-            <div class="col-md-4">Error! Usuario no autorizado</div>
-
-
-        </form>
-
-
-    </ul>
-    <%             } catch (Exception e) {
-            System.out.println("error." + e.getMessage());
-
-        }
-    %>
-</body>
-</html>
-
-
-
-<% }%>
+                            }
+                        %>
+                    </body>
+                </html>
+                <% }%>

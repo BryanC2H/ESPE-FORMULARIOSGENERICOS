@@ -1,9 +1,3 @@
-<%-- 
-    Document   : crearRestriccion
-    Created on : 05/03/2018, 11:29:35
-    Author     : Tefii
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Valores"%>
 <%@page import="espe.edu.ec.models.TipoPreguntas"%>
@@ -27,18 +21,12 @@
             out.println(ConstantesForm.js);
         %>    </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+ 
 
         <div>
             <div class="row bg-default">
                 <!--<div class="col-md-2"><center><img src="espelogo.jpg"/></center></div> -->
-                <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+                <div class="col-md-8"><center><h1>Formularios</h1></center></div>
                 <div class="col-md-2"></div>
             </div>
             <ul class="nav nav-tabs" role="tablist">

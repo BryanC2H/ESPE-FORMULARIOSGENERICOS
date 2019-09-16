@@ -1,8 +1,3 @@
-<%-- 
-    Document   : nuevaMatriz
-    Created on : 09/09/2016, 12:24:46 PM
-    Author     : Jorge
---%>
 <%@page import="espe.edu.ec.models.Valores"%>
 <%@page import="espe.edu.ec.models.TipoPreguntas"%>
 <%@page import="espe.edu.ec.models.Preguntas"%>
@@ -29,7 +24,6 @@
    
     </head>
     <body>
-<%@page import="org.apache.log4j.Logger"%>
   
         <%             try {
 
@@ -88,7 +82,7 @@
      %>
         <div class="row bg-default">
             <!--<div class="col-md-2"><center><img src="espelogo.jpg"/></center></div>-->
-            <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+            <div class="col-md-8"><center><h1>Formularios</h1></center></div>
             <div class="col-md-2"></div>
         </div>
             <ul class="nav nav-tabs" role="tablist">

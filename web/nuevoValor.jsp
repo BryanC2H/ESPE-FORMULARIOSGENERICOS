@@ -1,9 +1,3 @@
-<%-- 
-    Document   : nuevoValor
-    Created on : 13-ago-2016, 22:49:23
-    Author     : david
---%>
-
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="espe.edu.ec.models.Valores"%>
@@ -55,14 +49,7 @@
     %>
     </head>
     <body>
- 	<%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-
+ 	
     <%
     try{
             int cod = listaP.getLast().getCodigo_formulario();

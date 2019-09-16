@@ -1,9 +1,3 @@
-<%--
-    Document   : mostrarFormularioUsuario
-    Created on : 15/03/2018, 11:11:21
-    Author     : DIEGOPC
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Respuestas"%>
 <%@page import="javax.swing.JOptionPane"%>
@@ -40,35 +34,20 @@
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Usuario-Formulario</title>
         <%
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
         %>
-        <title>Usuario-Formulario</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <div class="row bg-default">
-        <!-- <div class="col-md-2"><center><img src="Logo_ESPE.png"  WIDTH="160" HEIGHT="100"/></center></div> -->
-        <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+        <div class="col-md-8"><center><h1>Formularios</h1></center></div>
         <div class="col-md-2"></div>
     </div>
-    <ul class="nav nav-tabs" role="tablist">
-        <!-- <li role="presentation" ><a href="NewForm.jsp"><img src="n.png"/> Nuevo Formulario</a></li> 
-         <li role="presentation"><a href="mostrarFormulario.jsp"><img src="m.png"/> Gestión Formulario</a></li>
-         <li role="presentation"><a href="mostrarGRes.jsp><img src="pm.png"/> Formularios Publicados</a></li> -->
-        <li class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="presentation"><a style="color:white" href="mostrarRespuesta.jsp"><i class="fas fa-" style='font-size:24px'>&#xf15c;</i><strong> Respuestas</strong></a></li></br>
-
-
+    <ul class="nav nav-tabs" role="tablist">      
+        <button align="center" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Volver"> <div class="col-md-3"><a href="mostrarGRes.jsp" ><i class='fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button>
     </ul>
 </head>
-<style>.navbar-custom {
-        color: #58D68D;
-        background-color: #239B56;
-        border-color: #000
-    }</style>
 <body>
-
     <%
         DB con = DB.getInstancia();
         Connection co = con.getConnection();
@@ -80,6 +59,7 @@
         if (NombreF != null) {
             Cod = Integer.parseInt(NombreF);
         }
+
         ResultSet rs = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "'").executeQuery();
         while (rs.next()) {
             Formulario F = new Formulario();
@@ -97,6 +77,7 @@
         /*Recogo los pidm para mostrarlos segun su usuario*/
         ResultSet rs1 = co.prepareStatement("select * from UTIC.UZGTFORMULARIO_PERSONA P, SATURN.SPRIDEN S "
                 + "WHERE S.SPRIDEN_PIDM = P.SPRIDEN_PIDM "
+                + "AND P.SPRIDEN_PIDM ='" + pidm + "'"
                 + "AND S.SPRIDEN_CHANGE_IND IS NULL "
                 + "AND P.UZGTFORMULARIOS_ESTADO_LLENADO <> 'N' "
                 + "AND P.codigo_UZGTFORMULARIOS ='" + Cod + "'"
@@ -110,7 +91,6 @@
             listaU.add(usuario);
             //JOptionPane.showMessageDialog(null, rs1.getInt(1));
         }
-        rs1.close();
 
         rs1 = co.prepareStatement("SELECT UZGTRESPUESTAS_ITERACION FROM UTIC.UZGTRESPUESTAS WHERE CODIGO_UZGTFORMULARIOS=" + Cod + " GROUP BY UZGTRESPUESTAS_ITERACION order by uzgtrespuestas_iteracion asc").executeQuery();
         while (rs1.next()) {
@@ -118,7 +98,6 @@
             res.setIteracionRespuesta(rs1.getInt(1));
             listaR.add(res);
         }
-        rs1.close();
         rs1.close();
         if (listaU.isEmpty()) {
             out.println("<div class=\"row\">");
@@ -132,8 +111,6 @@
             out.println("</div>");
             out.print("<div class=\"row\">");
             out.print("<div class=\"col-md-3\"></div>");
-            // out.print("<div class=\"col-md-2\"><p name=\"cod\">Codigo Formulario</p></div>");
-            // out.print("<div class=\"col-md-2\"><p name=\"nombre\">Usuario</p></div>");
             out.print("<div class=\"col-md-1\"><p name=\"pidm\">PIDM</p></div>");
             out.print("<div class=\"col-md-1\"><p name=\"id\">ID</p></div>");
             out.print("<div class=\"col-md-3\"><p name=\"nombres\">Nombres</p></div>");
@@ -143,17 +120,10 @@
             /*muestro los codigo de formulario, el usuario y su "pidm"*/
 
             if (listaF.getFirst().getTipoFormulario().equals("N") || listaF.getFirst().getTipoFormulario().equals("M")) {
-                //out.print("<div class=\"col-md-2\"><input type=\"hidden\" name=\"iter\" value='"+listaR.getFirst().getIteracionRespuesta()+"' readonly></div>");
                 for (int i = 0; i < listaU.size(); i++) {
-
-                    // out.print("<form action=\"mostrarRespuestaUsuario_1.jsp\" method=\"POST\" target=\"_self\">");
-                    out.print("<form action=\"mostrarRespuestaUsuario.jsp\" method=\"POST\" target=\"_self\">");
+                    out.print("<form action=\"mostrarRespuestaUsuario_1.jsp\" method=\"POST\" target=\"_self\">");
                     out.print("<div class=\"row\">");
                     out.print("<div class=\"col-xs-3\"></div>");
-                    //out.print("<div class=\"col-md-2\"><input class=\"panel panel-info panel-heading\" size='6' type=\"text\" name=\"cod\" value='"+Cod+"' readonly></div>");
-                    //JOptionPane.showMessageDialog(null, "iteracion: "+listaR.getFirst().getIteracionRespuesta());
-                    //
-                    //out.print("<div class=\"col-md-3\"><input class=\"panel panel-info panel-heading\" size='6' type=\"text\" name=\"nombre\" value='Usuario' readonly></div>");
                     out.print("<div class=\"col-xs-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"pidm\" value='" + listaU.get(i).getPIDM() + "' readonly></div>");
                     out.print("<div class=\"col-xs-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"id\" value='" + listaU.get(i).getIdEst() + "' readonly></div>");
                     out.print("<div class=\"col-xs-3\"><input type=\"text\" style='heigth : 1px' size='60' class=\"form-control input-sm\" name=\"nombres\" value='" + listaU.get(i).getNombreUsuario() + "' readonly></div>");
@@ -170,14 +140,9 @@
                         if (aux != listaR.get(i).getIteracionRespuesta()) {
                             if (listaU.get(j).getEstLn().equals("L")) {
                                 // out.print("<form action=\"mostrarRespuestaUsuario_1.jsp\" method=\"POST\" target=\"_self\">");
-                                out.print("<form action=\"mostrarRespuestaUsuario.jsp\" method=\"POST\" target=\"_self\">");
+                                out.print("<form action=\"mostrarRespuestaUsuario_1.jsp\" method=\"POST\" target=\"_self\">");
                                 out.print("<div class=\"row\">");
                                 out.print("<div class=\"col-md-3\"></div>");
-                                //out.print("<div class=\"col-md-2\"><input class=\"panel panel-info panel-heading\" size='6' type=\"text\" name=\"cod\" value='"+Cod+"' readonly></div>");
-                                //JOptionPane.showMessageDialog(null, "iteracion: "+listaR.getFirst().getIteracionRespuesta());
-                                //
-                                //out.print("<div class=\"col-md-3\"><input class=\"panel panel-info panel-heading\" size='6' type=\"text\" name=\"nombre\" value='Usuario' readonly></div>");
-                                out.print("<div class=\"col-md-1\"><input type=\"text\" style='heigth : 1px' size='1' class=\"form-control input-sm\" name=\"iter\" value='" + listaR.get(i).getIteracionRespuesta() + "' readonly></div>");
                                 out.print("<div class=\"col-md-1\"><input type=\"text\" style='heigth : 1px' size='5' class=\"form-control input-sm\" name=\"pidm\" value='" + listaU.get(j).getPIDM() + "' readonly></div>");
                                 out.print("<div class=\"col-md-1\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"id\" value='" + listaU.get(j).getIdEst() + "' readonly></div>");
                                 out.print("<div class=\"col-md-3\"><input type=\"text\" style='heigth : 1px' size='10' class=\"form-control input-sm\" name=\"nombres\" value='" + listaU.get(j).getNombreUsuario() + "' readonly></div>");
@@ -217,22 +182,9 @@
     </head>
     <body>
         <ul class="nav nav-tabs" role="tablist">
-
-
-
-
             <div class="col-md-4">Error! Usuario no autorizado</div>
-
-
-        </form>
-
-
-    </ul>
-</body>
+        </ul>
+    </body>
 </html>
-
-
-
 <% }
-
 %>

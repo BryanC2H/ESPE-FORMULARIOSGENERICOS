@@ -47,7 +47,7 @@ public class DB
         try{
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup("java:/comp/env");
-            DataSource dsd = (DataSource)envContext.lookup("jdbc/UTIC");
+            DataSource dsd = (DataSource)envContext.lookup("jdbc/utic");
             //DataSource dsd = (DataSource)envContext.lookup("jdbc/PRODP");
             connection = dsd.getConnection();   
         }catch (NamingException | SQLException ex) {

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : modificado.jsp
-    Created on : 08/01/2018, 10:10:01
-    Author     : DIEGOPC
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.util.Date"%>
@@ -28,8 +22,6 @@
         <%
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
-        
-           
             DB con = DB.getInstancia();
             Connection co = con.getConnection();
             Date Fecha = new Date();
@@ -93,13 +85,6 @@
                 background-color: #239B56;
                 border-color: #000
             }</style>
-            <%@page import="org.apache.log4j.Logger"%>
-            <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-            <%logger.info("esta es la prueba."); %>
-            <%logger.debug("Demostracion del mensaje");%>
-            <%logger.warn("Show WARN message");%>
-            <%logger.error("Show ERROR message");%>
-            <%logger.fatal("Show FATAL message"); %>
         <div class="row bg-default">
             <div class="col-md-2"><center><img src="espelogo.jpg"/></center></div>
             <div class="col-md-8"><center><h1>Formularios Genéricos</h1></center></div>

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : nuevacabecera
-    Created on : 16-oct-2016, 18:49:16
-    Author     : david
---%>
-
 <%@page import="espe.edu.ec.models.Cabecera"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
@@ -19,13 +13,7 @@
         <title>Cabecera-Formularios</title>
     </head>
     <body>
-<%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+
 <%             try{
     
 

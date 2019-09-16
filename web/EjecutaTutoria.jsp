@@ -1,9 +1,3 @@
-<%-- 
-    Document   : EjecutaTutoria
-    Created on : 25/06/2019, 12:50:35 PM
-    Author     : aetorres
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

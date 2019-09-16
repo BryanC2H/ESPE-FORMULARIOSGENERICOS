@@ -1,9 +1,3 @@
-<%-- 
-    Document   : notificacionRestriccion
-    Created on : 07/03/2018, 9:38:06
-    Author     : Tefii
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

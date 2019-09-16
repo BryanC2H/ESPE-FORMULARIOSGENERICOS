@@ -1,14 +1,9 @@
-<%-- 
-    Document   : NewForm
-    Created on : 15/03/2018, 11:06:04 AM
-    Author     : D4ve
---%>
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Usuario"%> <!-- import de Usuario -->
 <%@page session="true" %> <!-- Se agrega a modo de validacion -->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<<%Cookie cookie = null;
+<%Cookie cookie = null;
     Cookie[] cookies = null;
     String pidm = null;
     String id = null;
@@ -39,13 +34,6 @@
         %>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
         <%
 
             try {

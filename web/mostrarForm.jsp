@@ -1,10 +1,3 @@
-<%-- 
-Document   : mostrar
-Created on : 14-ene-2018, 12:10:38
-Author     : Gabii
---%>
-
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.connection.DB2"%>
 <%@page import="espe.edu.ec.models.datoComun"%>
@@ -34,9 +27,6 @@ Author     : Gabii
         <%
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
-        %>
-
-        <%
             DB con = DB.getInstancia();
             Connection co = con.getConnection();
             DB2 con2 = DB2.getInstancia();
@@ -48,40 +38,28 @@ Author     : Gabii
             LinkedList<Valores> listaV = new LinkedList<Valores>();
             LinkedList<Respuestas> listaR = new LinkedList<Respuestas>();
             String NombreF = request.getParameter("Submit");
-
             /*DATOS COMUNES*/
             LinkedList<datoComun> listaDC = new LinkedList<datoComun>();
             LinkedList<String> valoresDC = new LinkedList<String>();
-            /////////////////////////////////////////////////////////////////////
 
-            //JOptionPane.showConfirmDialog(null, pidm);
-            //int pidm= Integer.parseInt(request.getParameter("param"));
-            //Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser"));
-            //int pidm= currentUser.getPIDM();
             Cookie cookie = null;
             Cookie[] cookies = null;
-            String pidm = null;
-            String id = null;
+            int pidm = 0;
             cookies = request.getCookies();
             if (cookies != null) {
                 for (int i = 0; i < cookies.length; i++) {
                     cookie = cookies[i];
                     if (cookie.getName().equals("pidm")) {
-                        pidm = cookie.getValue();
-                    } else if (cookie.getName().equals("id")) {
-                        id = cookie.getValue();
+                        pidm = Integer.valueOf(cookie.getValue());
                     }
                 }
             } else {
                 out.println("<h2>No cookies founds</h2>");
             }
-            String currentUser = pidm;
-            if (currentUser != null) {
-                pidm = Integer.toString(ConstantesForm.pidmUser);
+            if (pidm != 0 && pidm == ConstantesForm.pidmUser) {
+                pidm = ConstantesForm.pidmUser;
             }
-            pidm = id;
             int Cod = Integer.parseInt(NombreF);
-
             ResultSet rs = co.prepareStatement("SELECT * FROM UTIC.UZGTFORMULARIOS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "'").executeQuery();
             try {
                 while (rs.next()) {
@@ -143,25 +121,12 @@ Author     : Gabii
         %>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-        <%
-            try {
-
-        %>
+        <%try {%>
         <div class="row bg-default">
             <div class="col-md-2"><center><img src="Imagenes/espelogo.jpg"/></center></div>
             <div class="col-md-2"></div>
         </div>
-
         <ul class="nav nav-tabs" role="tablist">
-            <%--<li role="presentation"><a  href="mostrarGRes.jsp" >Volver</a></li>--%>
-
             <li class="col-md-1" align="center"><button align="center" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Volver"><a href="mostrarGRes.jsp"><i class='fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button><li>
                 <br>
         </ul>
@@ -189,17 +154,12 @@ Author     : Gabii
                     alert("Debe ingresar valores numericos");
                 }
             }
-
-
             function nombre(fic) {
                 fic = fic.split('\\');
                 var name = fic[fic.length - 1];
-                // alert(fic[fic.length-1]);
                 document.getElementById('fileN').value = '' + name;
             }
         </script>
-
-
         <div class="container">
             <%                /*if en caso de ser no modificable o secuencial*/
                 if (listaF.getFirst().getTipoFormulario().equals("N") || listaF.getFirst().getTipoFormulario().equals("S")) {
@@ -209,7 +169,6 @@ Author     : Gabii
                     out.println("<div class=\"row\">");
                     out.println("<div class=\"col-md-3\"></div>");
                     out.println("<div class=\"col-md-6\"><center><h4 class=\"text-uppercase\">" + listaF.getFirst().getNombre_formulario() + "</h4></center></div>");
-
                     out.println("</div>");
                     out.println("<div class=\"row\">");
                     out.println("<div class=\"col-md-3\"></div>");
@@ -253,17 +212,17 @@ Author     : Gabii
                                 /////////////////////////////////////////////////////////////////////////////
                                 if (listaP.get(j).getCodigo_tipo_pregunta() == 9) {
                                     numDC++;
-                                    //JOptionPane.showMessageDialog(null, "QUERY: " +listaDC.getFirst().getQuery()+ " PIDM: "+ pidm  + "NUEVO VALOR: "+nuevo);
                                     String dato = "";
-                                    //JOptionPane.showMessageDialog(null, "listaValores " + listaV.size());
-
                                     for (int cont1 = 0; cont1 < listaDC.size(); cont1++) {
                                         for (int dc = 0; dc < listaV.size(); dc++) {
                                             if (listaV.get(dc).getValores().equals(listaDC.get(cont1).getEtiqueta()) && listaV.get(dc).getCodigo_Preguntas() == listaP.get(j).getCodigo_preguntas()) {
                                                 //JOptionPane.showMessageDialog(null, "ETIQUETA: " + listaDC.get(cont1).getEtiqueta() + " VALOR:"+ listaV.get(dc).getValores()+" Contador " + dc);
                                                 String valquery = listaDC.get(cont1).getQuery();
                                                 String nuevo = valquery.replace(":PAR_PIDM", "" + pidm);
+                                                out.println("<h1>" + nuevo + "</h1>");
+
                                                 ResultSet rs2 = co2.prepareStatement(nuevo).executeQuery();
+
                                                 while (rs2.next()) {
                                                     dato = rs2.getString(1);
                                                     valoresDC.add(dato);
@@ -286,16 +245,13 @@ Author     : Gabii
                                     numT++;
                                     out.println("<div class=\"col-md-3\"></div>");
                                     out.println("<div class=\"col-md-7 col-md-offset-3\"><input id=\"valor\" type=\"text\" name=\"valor" + numT + "\" class=\"form-control\"/></div>");
-                                    //
                                     out.println("</div>");
                                 }
-
                                 if (listaP.get(j).getCodigo_tipo_pregunta() == 2) {
                                     numC++;
                                     out.println("</div>");
                                     for (int k = 0; k < listaV.size(); k++) {
                                         if (listaV.get(k).getCodigo_Preguntas() == listaP.get(j).getCodigo_preguntas()) {
-
                                             out.println("<div class=\"row\">");
                                             out.println("<div class=\"col-md-3\"></div>");
                                             out.println("<div class=\"col-md-3\"><label><input type=\"checkbox\" name=\"seleccion" + numC + "\" value=\"" + listaV.get(k).getValores() + "\"> " + listaV.get(k).getValores() + "</input></label></div>");
@@ -308,9 +264,7 @@ Author     : Gabii
                                     numR++;
                                     out.println("</div>");
                                     for (int k = 0; k < listaV.size(); k++) {
-
                                         if (listaV.get(k).getCodigo_Preguntas() == listaP.get(j).getCodigo_preguntas()) {
-
                                             out.println("<div class=\"row\">");
                                             out.println("<div class=\"col-md-3\"></div>");
                                             out.println("<div class=\"col-md-3\"><input type=\"radio\" name=\"radio" + numR + "\" value=\"" + listaV.get(k).getValores() + "\"> " + listaV.get(k).getValores() + "</input></div>");
@@ -327,9 +281,7 @@ Author     : Gabii
                                     out.println("<div class=\"col-md-3\"><select type=\"text\" name=\"lista" + numL + "\">");
                                     for (int k = 0; k < listaV.size(); k++) {
                                         if (listaV.get(k).getCodigo_Preguntas() == listaP.get(j).getCodigo_preguntas()) {
-
                                             out.println("<option>" + listaV.get(k).getValores() + "</option>");
-
                                         }
                                     }
                                     out.println("</select></div>");
@@ -345,10 +297,7 @@ Author     : Gabii
                                     out.println("<div class=\"col-md-3\"></div>");
                                     out.println("<span class=\"btn btn-success btn-file\" ><input  type=\"file\"  name=\"archivo" + numA + "\" id= \"fileName\" onchange=\"nombre(this.value)\" /></span>");
                                     out.println("<input  type=\"hidden\" name=\"fileN\" id=\"fileN\" />");
-                                    // out.println("<button type=\"button\"  name=\"bt\" onclick=\"alerta()\"/>");
-                                    //   out.println("<progress id=\"progressBar\" value=\"0\" max=\"100\" style=\"width:300px;\"></progress>");
-                                    //  out.println("<h3 id=\"status\"></h3>");
-                                    //out.println("<p id=\"loaded_n_total\"></p>");
+
                                     out.println("</div><br>");
                                     //out.println("</div>");
                                 }
@@ -440,7 +389,6 @@ Author     : Gabii
             <%
             } else {//else en caso de ser modificable
                 FormPersona fp = new FormPersona();
-                //  int pidm=66;
                 ResultSet rse = co.prepareStatement("select * from uzgtrespuestas where codigo_uzgtformularios=" + Cod + " and spriden_pidm=" + pidm).executeQuery();
                 while (rse.next()) {
 
@@ -450,7 +398,7 @@ Author     : Gabii
                 rs = co.prepareStatement("select * from uzgtrespuestas where codigo_UZGTFORMULARIOS=" + Cod + " and codigo_uzgtformularios_persona=" + fp.getCodFormP() + " and spriden_pidm=" + pidm + " and uzgtrespuestas_iteracion=0 order by codigo_uzgtrespuestas asc").executeQuery();
                 while (rs.next()) {
                     Respuestas res = new Respuestas();
-                    res.setPidm_usuario(Integer.parseInt(pidm));
+                    res.setPidm_usuario(pidm);
                     res.setCodigo_persona(rs.getInt(2));
                     res.setCodigo_formulario(rs.getInt(3));
                     res.setCodigo_grupo(rs.getInt(4));
@@ -506,15 +454,10 @@ Author     : Gabii
                                 out.println("<div class=\"col-md-6\"><h4>" + listaP.get(j).getLabel_pregunta() + "</h4></div>");
                                 out.println("<div class=\"col-md-3\"></div>");
                                 out.println("</div>");
-                                //////////////////////////////////////////////////////////////////////////////
                                 ////////////////////////////////TIPO TEXTO//////////////////////////////////
-                                /////////////////////////////////////////////////////////////////////////////
                                 if (listaP.get(j).getCodigo_tipo_pregunta() == 9) {
                                     numDC++;
-                                    //JOptionPane.showMessageDialog(null, "QUERY: " +listaDC.getFirst().getQuery()+ " PIDM: "+ pidm  + "NUEVO VALOR: "+nuevo);
                                     String dato = "";
-                                    //JOptionPane.showMessageDialog(null, "listaValores " + listaV.size());
-
                                     for (int cont1 = 0; cont1 < listaDC.size(); cont1++) {
                                         for (int dc = 0; dc < listaV.size(); dc++) {
                                             if (listaV.get(dc).getValores().equals(listaDC.get(cont1).getEtiqueta()) && listaV.get(dc).getCodigo_Preguntas() == listaP.get(j).getCodigo_preguntas() && listaV.get(dc).getCodigo_Grupo() == listaP.get(j).getCodigo_grupo()) {
@@ -687,7 +630,6 @@ Author     : Gabii
                     out.println("<div class=\"row\">");
                     out.println("<br><div class=\"col-md-4\"></div>");
                     out.print("<input type=\"hidden\" name= \"param\" value=\"" + pidm + "\" >");
-
                     out.println("<div class=\"col-md-4\"><center><button class=\"btn btn-default\" type=\"text\" name=\"Submit\" value='" + Cod + "'  >Guardar</button></center></div>");
                     out.println("</div>");
                 %>
@@ -748,7 +690,6 @@ Author     : Gabii
                                 //if(listaR.get(r).getCodigo_preguntas()==listaP.get(j).getCodigo_preguntas()){  
                                 if (listaP.get(j).getCodigo_tipo_pregunta() == 9) {
                                     numDC++;
-                                    //JOptionPane.showMessageDialog(null, "QUERY: " +listaDC.getFirst().getQuery()+ " PIDM: "+ pidm  + "NUEVO VALOR: "+nuevo);
                                     String dato = "";
                                     //JOptionPane.showMessageDialog(null, "listaValores " + listaV.size());
                                     for (int cont1 = 0; cont1 < listaDC.size(); cont1++) {
@@ -1025,12 +966,12 @@ Author     : Gabii
             </script>
 
 
-        </form>
-    </div>
-    <%             } catch (Exception e) {
-            System.out.println("error." + e.getMessage());
 
-        }
-    %>
-</body>
+        </div>
+        <%             } catch (Exception e) {
+                System.out.println("error." + e.getMessage());
+
+            }
+        %>
+    </body>
 </html>

@@ -57,7 +57,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand"><b>Servicios</b> </a>
+          <a class="navbar-brand"><b>Formularios</b> </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -81,6 +81,8 @@
 <body>
 
   <%
+    String idFormulario = null;
+    idFormulario = request.getParameter("idbusqueda");
     DB con = DB.getInstancia();
     Connection co = con.getConnection();
     LinkedList<Formulario> listaF = new LinkedList<Formulario>();
@@ -112,7 +114,8 @@
             + "AND S.SPRIDEN_CHANGE_IND IS NULL "
             + "AND P.UZGTFORMULARIOS_ESTADO_LLENADO <> 'N' "
             + "AND P.codigo_UZGTFORMULARIOS ='" + Cod + "'"
-            + "AND ROWNUM <= 2"
+            + "AND SPRIDEN_ID= '" + idFormulario + "'"
+            //            + "AND ROWNUM <= 2"
             + "ORDER BY S.SPRIDEN_LAST_NAME").executeQuery();
     while (rs1.next()) {
       Usuario usuario = new Usuario();
@@ -182,20 +185,12 @@
         </thead>
         <tbody>        
           <%
-            ResultSet rs2 = co.prepareStatement(
-                    "select * from UTIC.UZGTFORMULARIO_PERSONA P, SATURN.SPRIDEN S "
-                    + "WHERE S.SPRIDEN_PIDM = P.SPRIDEN_PIDM "
-                    + "AND S.SPRIDEN_CHANGE_IND IS NULL "
-                    + "AND P.UZGTFORMULARIOS_ESTADO_LLENADO <> 'N' "
-                    + "AND P.codigo_UZGTFORMULARIOS ='" + Cod + "'"
-                    + "AND ROWNUM <= 300"
-                    + "ORDER BY S.SPRIDEN_LAST_NAME").executeQuery();
-            while (rs2.next()) {
+            for (int i = 0; i < listaU.size(); i++) {
           %>
           <tr>
-            <td class="text-center"><input type="text"  class="form-control" name="pidm" value="<%= rs2.getInt(1)%>" readonly>  </td>
-            <td class="text-center"><input type="text"  class="form-control" name="id" value="<%= rs2.getString(8)%>" readonly>  </td>
-            <td class="text-center"><input type="text"  class="form-control" name="nombres" value="<%= rs2.getString(9) + ' ' + rs2.getString(10)%>" readonly> </td>
+            <td class="text-center"><input type="hidden"  class="form-control" name="pidm" value="<%= listaU.get(i).getPIDM()%>"><%= listaU.get(i).getPIDM()%></td>
+            <td class="text-center"><input type="hidden"  class="form-control" name="id" value="<%= listaU.get(i).getIdEst()%>"><%= listaU.get(i).getIdEst()%></td>
+            <td class="text-center"><input type="hidden"  class="form-control" name="nombres" value="<%= listaU.get(i).getNombreUsuario()%>"><%= listaU.get(i).getNombreUsuario()%></td>
             <td>
               <div class="btn-toolbar text-center" role="toolbar">
                 <div class="row">
@@ -215,17 +210,15 @@
               </div>
             </td>
           </tr>
-
-
-          <% } %>
-
+          <%
+            }
+          %>
         </tbody>
       </table>
     </form> 
 
   </div>
   <%
-      rs2.close();
     }
     //cierre if modificable y no modificable
     if (listaF.getFirst().getTipoFormulario().equals("S")) {
@@ -254,10 +247,10 @@
                   if (listaU.get(j).getEstLn().equals("L")) {
           %>
           <tr>
-            <td class="text-center"><input type="text"  class="form-control" name="iter" value="<%= listaR.get(i).getIteracionRespuesta()%>" readonly>  </td>
-            <td class="text-center"><input type="text"  class="form-control" name="pidm" value="<%= listaU.get(j).getPIDM()%>" readonly>  </td>
-            <td class="text-center"><input type="text"  class="form-control" name="id" value="<%= listaU.get(j).getIdEst()%>" readonly> </td>
-            <td class="text-center"><input type="text"  class="form-control" name="nombres" value="<%= listaU.get(j).getNombreUsuario()%>" readonly> </td>
+            <td class="text-center"><input type="hidden"  class="form-control" name="iter" value="<%= listaR.get(i).getIteracionRespuesta()%>"><%= listaR.get(i).getIteracionRespuesta()%></td>
+            <td class="text-center"><input type="hidden"  class="form-control" name="pidm" value="<%= listaU.get(j).getPIDM()%>"><%= listaU.get(j).getPIDM()%></td>
+            <td class="text-center"><input type="hidden"  class="form-control" name="id" value="<%= listaU.get(j).getIdEst()%>"><%= listaU.get(j).getIdEst()%></td>
+            <td class="text-center"><input type="hidden"  class="form-control" name="nombres" value="<%= listaU.get(j).getNombreUsuario()%>"><%= listaU.get(j).getNombreUsuario()%></td>
 
             <td>
               <div class="btn-toolbar text-center" role="toolbar">

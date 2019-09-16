@@ -56,14 +56,7 @@ and open the template in the editor.
 
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-
+        
         <%             try {
 
         %>
@@ -153,7 +146,7 @@ and open the template in the editor.
                   <label for="ID    ">ID</label>
             <input type="text" class="form-control" name="query"  placeholder="Ingrese Id"></input>
      
-            </div>f
+            </div>
             <h3>Fecha de vigencia</h3><br>
             <ul><div class="col-md-2"><h4>Desde: </h4></div>
                 <li class="col-md-3"><label for="fechaInicio" class="sr-only">fechaInicio</label><input value="<%=dateFormat.format(date)%>" id="fechaInicio" type="date" name="fechaInicio" class="form-control" placeholder="fechaInicio" required/></li>

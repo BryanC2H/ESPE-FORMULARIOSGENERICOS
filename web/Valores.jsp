@@ -1,10 +1,3 @@
-<%-- 
-    Document   : Valores
-    Created on : 13-ago-2016, 22:39:15
-    Author     : david
---%>
-
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.connection.DB"%>
 <%@page import="java.sql.Connection"%>
@@ -30,13 +23,7 @@
     </body>
 
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+       
         <%
 
             try {
@@ -59,20 +46,15 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand"><b>Nuevo Formulario</b> </a>
+                        <a class="navbar-brand"><b>Agregue un Nuevo Valor</b> </a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li role="presentation">
-                                <a href="Valores.jsp">
-                                    <i class="fas fa-">&#xf0fe</i>&nbsp<strong>Nuevo Valores</strong></a>
-                            </li>
-                            <li role="presentation">
                                 <a href="pregunta.jsp">
-                                    <i class="fas fa-"></i> Nueva Pregunta</a>
+                                    <i class="fas fa-">&#xf0fe</i>&nbsp<strong>Nueva Pregunta</strong></a>
                             </li>
-                            
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->

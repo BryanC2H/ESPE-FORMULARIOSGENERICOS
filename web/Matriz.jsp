@@ -1,9 +1,3 @@
-<%-- 
-    Document   : Matriz
-    Created on : 09/09/2016, 12:09:03 PM
-    Author     : Jorge
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -48,20 +42,13 @@
         </script>
     </head>
     <body>
-        <style>.navbar-custom {
-                color: #58D68D;
-                background-color: #239B56 ;
-                border-color: #000
-            }</style>
-
         <div class="row bg-default">
             <div class="col-md-2"><center><img src="Imagenes/espelogo.jpg"/></center></div> -->
-            <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+            <div class="col-md-8"><center><h1>Formularios</h1></center></div>
             <div class="col-md-2"></div>
         </div>
         <ul class="nav nav-tabs" role="tablist">
-
-            <li class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="presentation"><a style="color:white" href="pregunta.jsp"><i class="fas fa-" style='font-size:24px'>&#xf15c;</i><strong> Volver</strong></a></li></br>
+                <button align="center" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Volver"> <div class="col-md-3"><a href="pregunta.jsp" ><i class='	fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button>
         </ul>
         <form action="nuevaMatriz.jsp" name="frmArreglo" id="frmArreglo">
             <hr/>

@@ -1,11 +1,4 @@
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
-<%-- 
-    Document   : almacenarR.jsp
-    Created on : 22/01/2018, 19:16:07
-    Author     : DIEGOPC
---%>
-
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="espe.edu.ec.models.Respuestas"%>
@@ -30,9 +23,7 @@
         <%
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
-        %>
-
-        <%
+            
             DB con = DB.getInstancia();
             Connection co = con.getConnection();
             LinkedList<Formulario> listaF = new LinkedList<Formulario>();
@@ -57,7 +48,7 @@
                 F.setBase_formulario(rs.getString(6));
                 listaF.add(F);
             }
-            rs.close();
+
             rs = co.prepareStatement("SELECT * FROM UTIC.UZGTGRUPO WHERE codigo_UZGTFORMULARIOS = '" + Cod + "' order by codigo_UZGTGRUPO ASC").executeQuery();
             while (rs.next()) {
                 Grupo G = new Grupo();
@@ -67,7 +58,7 @@
                 G.setDescripcion_grupo(rs.getString(4));
                 listaG.add(G);
             }
-            rs.close();
+
             rs = co.prepareStatement("SELECT * FROM UTIC.UZGTPREGUNTAS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "' order by codigo_UZGTPREGUNTAS ASC").executeQuery();
             while (rs.next()) {
                 Preguntas P = new Preguntas();
@@ -89,7 +80,7 @@
                 Val.setValores(rs.getString(5));
                 listaV.add(Val);
             }
-            rs.close();
+      
             rs = co.prepareStatement("SELECT * FROM UTIC.UZGTRESPUESTAS WHERE codigo_UZGTFORMULARIOS = '" + Cod + "' AND SPRIDEN_PIDM=" + usPidm + "  order by codigo_UZGTRESPUESTAS ASC").executeQuery();
             while (rs.next()) {
                 Respuestas res = new Respuestas();
@@ -107,13 +98,7 @@
         %>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+       
         <%
 
             try {
@@ -121,13 +106,12 @@
         %>    
         <div id="imprimir">
             <div class="row bg-default">
-                <div class="col-md-2"><center><img src="espelogo.jpg"/></center></div> 
+                <div class="col-md-2"><center><img src="Imagenes/espelogo.jpg"/></center></div> 
                 <!--   <div class="col-md-8"><center><h1>Gestión de Formularios</h1></center></div> -->
                 <div class="col-md-2"></div>
             </div>
             <ul class="nav nav-tabs" role="tablist">
-                <!-- <li role="presentation"><a href="mostrarGRes.jsp>Volver</a></li> -->
-                <li class="col-md-1" align="center"><button align="center" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Volver"><a href="mostrarGRes.jsp"><i class='fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button><li>
+                <li class="col-md-1" align="center"><button align="center" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Volver"><a href="Test.jsp"><i class='fas fa-arrow-left' style='font-size:40px;color:white'></i></a></button><li>
             </ul>
 
 

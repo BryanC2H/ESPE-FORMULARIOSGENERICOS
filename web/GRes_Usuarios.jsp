@@ -1,17 +1,11 @@
-<%-- 
-    Document   : mostrarFormulario
-    Created on : 14-ene-2018, 21:55:20
-    Author     : D4ve
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Usuario"%>
+<%@page import="espe.edu.ec.connection.DB"%>
 <%@page import="espe.edu.ec.connection.DB2"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="espe.edu.ec.models.Formulario"%>
-<%@page import="espe.edu.ec.connection.DB"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.decrypt.DecryptSmAtrix"%>
 <%@page import="java.util.logging.Level"%>
@@ -31,18 +25,6 @@
         <%
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
-        %>
-        <script> $(document).ready(function ()
-            {
-                $(
-                        '[data-toggle="tooltip"]'
-                        ).tooltip();
-            });
-        </script>
-
-
-        <%
-            Logger LOGGER = Logger.getLogger("bitacora.subnivel.Control");
 
             Cookie cookie = null;
             Cookie[] cookies = null;
@@ -61,84 +43,71 @@
             } else {
                 out.println("<h2>No cookies founds</h2>");
             }
-            String currentUser = pidm;
-            if (currentUser != null) {
-                int PIDMget = 0;
-
-                try {
-                    DecryptSmAtrix dec = new DecryptSmAtrix();
-                    id = request.getParameter("param");
-                    if (currentUser == null && id.isEmpty()) {
-                        LOGGER.log(Level.INFO, "MOSTRAR GRES ID: " + id);
-                        if (id.length() > 0) {
-                            //JOptionPane.showMessageDialog(null, "entro al if");   
-                            id = new String(dec.decrypt(id));
-
-                            LOGGER.log(Level.INFO, "MOSTRAR GRES ID: " + id);
-                            DB2 conn = DB2.getInstancia();
-                            Connection coo = conn.getConnection();
-
-                            // JOptionPane.showMessageDialog(null, "PIDM: "+user.getPIDM());
-                            ResultSet res = coo.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM as estPIDM FROM SPRIDEN WHERE SPRIDEN.SPRIDEN_ID = '" + id + "' AND SPRIDEN.SPRIDEN_CHANGE_IND IS NULL").executeQuery();
-                            LOGGER.log(Level.INFO, "MOSTRAR GRES res: " + res);
-                            if (res.next()) {
-                                LOGGER.log(Level.INFO, "MOSTRAR GRES res: " + res);
-                                PIDMget = res.getInt(1);
-                            }
-                            conn.closeConexion();
-                        } else {
-
-                            PIDMget = Integer.parseInt(id);
-                            LOGGER.log(Level.INFO, "MOSTRAR GRES PIDMget:  " + PIDMget);
-
-                        }
-                    } else {
-                        PIDMget = 2401;
-                        //int PIDMget = 348249;
-                        //int PIDMget = 7683;
-                        String param = "bccd67a1d7973a4109ab65c82680c115";
-                        id = "L00347668";
-                        //String id = "L00368786";
+            Logger LOGGER = Logger.getLogger("bitacora.subnivel.Control");
+            int PIDMget = Integer.parseInt(pidm);
+            
+            try {
+                DecryptSmAtrix dec = new DecryptSmAtrix();
+                if (id.length() > 0) {
+                    id = new String(dec.decrypt(id));
+                    DB2 conn = DB2.getInstancia();
+                    Connection coo = conn.getConnection();
+                    ResultSet res = coo.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM as estPIDM FROM SPRIDEN WHERE SPRIDEN.SPRIDEN_ID = '" + id + "' AND SPRIDEN.SPRIDEN_CHANGE_IND IS NULL").executeQuery();
+                    if (res.next()) {
+                        PIDMget = res.getInt(1);
                     }
-
-                } catch (Exception e) {
-                    LOGGER.log(Level.WARNING, "MOSTRAR GRES ", e);
+                    conn.closeConexion();
+                } else {
+                    PIDMget = Integer.parseInt(id);
                 }
+            } catch (Exception e) {
+
+            }
         %>
     </head>
     <body>
+        <%LOGGER.info("GRES_USUARIO."); %>
 
 
-        <%             try {
-
+        <% try {
         %>
+        <p></p>
+        <div class="container">
+            <nav class="navbar navbar-default" role="tablist">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand"><b>Publicados</b> </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a><% out.print(id);%></a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+        </div>
+        <!-- --------------------------------Fin Navbar superior-------------------------------------------  -->
 
+        <div class="container">
 
-
-        </br></br></br>
-        <ul class="nav nav-tabs " role="tablist" >
-
-            <%        out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white;\"  href=\"NewForm.jsp\"><i class=\"fas fa-\" style='font-size:24px'>&#xf0fe;</i><strong> Nuevo </strong></a></li>");
-                out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white;\" href=\" mostrarFormulario.jsp\"><i class=\"fas fa-tools\" style='font-size:24px'></i><strong> Gestión </strong></a></li>");
-                //out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white;\" href=\"mostrarGRes.jsp\"null\"\"><i class=\"fas fa-chalkboard-teacher\" style='font-size:24px'></i>&nbsp<strong>Publicados</strong></a></li>");
-                out.print("<li class=\"navbar navbar-inverse navbar-fixed-top navbar-custom\" role=\"presentation\"><a style=\"color:white ;\" href=\"mostrarRespuesta.jsp\"><i class=\"fas fa-\" style='font-size:24px'>&#xf15c;</i><strong> Respuestas</strong></a></li></br>");
-            %>
-
-        </ul>
-
-
-        <div class="container-fluid">
-
-        </center><div class="col-md-6 offset-md-3" align="center"><h5 class="text alert alert-success">Los formularios se pueden llenar una sola vez, después deberá guardar e imprimir inmediatamente, ya que luego no tendrá opción de cambiar o volver a imprimir.</h5></div></center>
+        </center><div class="col-3 .col-md-7" align="center"><h5 class="text alert alert-success">Los formularios se pueden llenar una sola vez, después deberá guardar e imprimir inmediatamente, ya que luego no tendrá opción de cambiar o volver a imprimir.</h5></div></center>
 </div>
 </div>
-<div class="container-fluid">
+<div class="container">
 
     <center><div class="col-3 .col-md-7"><h3 class="text alert alert-success">Formularios Obligatorios</h3></div></center>
 </div>
 </div>   
 
-<%  DB con = DB.getInstancia();
+<%    //FORMULARIOS OBLIGATORIOS
+    DB con = DB.getInstancia();
     Connection co = con.getConnection();
 
     //Query para seleccionar los formularios Obligatorios
@@ -165,18 +134,17 @@
             listaF2.add(F2);
         }
         rs2.close();
-    }%>
-
-<%
+    }
     //Muestra los Formularios Obligatorios del Usuario
     for (int i = 0; i < listaF2.size(); i++) {
-        if (listaF2.isEmpty()) {
+        if (codForms2.isEmpty()) {
             out.println("<div class=\"row\">");
             out.println("<div class=\"col-md-3\"></div>");
             out.println("<div class=\"col-md-6\"><center><h5 class=\"alert alert-info\">" + "No tiene Formularios Obligatorios por llenar" + "</h5></center></div>");
             out.println("</div>");
         } else {
             String cod = "";
+            out.print("<form action=\"mostrarForm.jsp\" method=\"POST\" target=\"_self\" style=\"display:inline;\">");
             out.print("<form action=\"mostrarForm.jsp\" method=\"POST\" target=\"_self\" style=\"display:inline;\">");
             out.print("<div class=\"row\">");
             out.print("<div class=\"col-md-4\"></div>");
@@ -194,6 +162,9 @@
         }
     }
 %>
+
+
+
 <% //Muestra los Formularios llenados del Usuario
     LinkedList<Integer> codForms1 = new LinkedList<Integer>();
     ResultSet resu1 = co.prepareStatement("select p.codigo_uzgtformularios from UTIC.UZGTFORMULARIO_PERSONA p,UTIC.UZGTFORMULARIOS f where p.spriden_pidm =" + PIDMget + "and p.codigo_uzgtformularios = f.codigo_uzgtformularios and (  p.uzgtformularios_estado_llenado ='L' or f.uzgtformularios_estado_llenado ='S' or f.uzgtformularios_estado_llenado ='M' )  ORDER BY codigo_UZGTFORMULARIOS ASC").executeQuery();
@@ -272,7 +243,7 @@
 
 
 %>
-<div class="container-fluid">
+<div class="container">
     <center><div class="col-3 .col-md-7"><h3 class="text alert alert-success">Formularios pendientes</h3></div></center>
 </div>
 </div> 
@@ -302,7 +273,7 @@
             out.print("<td><div class=\"col-md-1\"><p id=\"cod\">" + listaF.get(i).getCodigo_formulario() + "</p></div>");
             out.print("<div class=\"col-md-3\" align=\"justify\"><p name=\"nombre\">" + listaF.get(i).getNombre_formulario() + "</p></div>");
             out.print("<input type=\"hidden\" name= \"param\" value=\"" + PIDMget + "\" >");
-            out.print("<div class=\"col-md-1\"><button class=\"btn btn-outline-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Llenar\" \"type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarForm.jsp';this.form.submit();\" value='" + cod + listaF.get(i).getCodigo_formulario() + "'><i class=\"fas fa-\" style='font-size:20px'>	&#xf044;</i></button></div>");
+            out.print("<div class=\"col-md-1\"><button class=\"btn btn-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Llenar\" \"type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarForm.jsp';this.form.submit();\" value='" + cod + listaF.get(i).getCodigo_formulario() + "'><i class=\"fas fa-\" style='font-size:20px'>	&#xf044;</i></button></div>");
             out.print("<div class=\"col-md-3\"></div>");
 
             out.print("</div></form>");
@@ -320,14 +291,14 @@
         out.print("<div class=\"col-md-1\"><center><p id=\"cod\">" + listaF3.get(i).getCodigo_formulario() + "</p></center></div>");
         out.print("<div class=\"col-md-3\"><p name=\"nombre\">" + listaF3.get(i).getNombre_formulario() + "</p></div>");
         out.print("<input type=\"hidden\" name= \"param\" value=\"" + PIDMget + "\" >");
-        out.print("<div class=\"col-md-1\"><button class=\"btn btn-outline-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Llenar\" \"type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarForm.jsp';this.form.submit();\" value='" + cod + listaF.get(i).getCodigo_formulario() + "'><i class=\"fas fa-\" style='font-size:20px'>	&#xf044;</i></button></div>");
+        out.print("<div class=\"col-md-1\"><button class=\"btn btn-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Llenar\" \"type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarForm.jsp';this.form.submit();\" value='" + cod + listaF.get(i).getCodigo_formulario() + "'><i class=\"fas fa-\" style='font-size:20px'>	&#xf044;</i></button></div>");
         out.print("<div class=\"col-md-3\"></div>");
         out.print("</div></form>");
     }
 %>
 
 
-</br><div class="container-fluid">
+<p></p><div class="container">
 
     <center><div class="col-3 .col-md-7"><h3 class="text alert alert-success">Formularios Llenos.</h3></div></center>
 </div>
@@ -370,7 +341,7 @@
             out.print("<div class=\"col-md-4\"></div>");
             out.print("<div class=\"col-md-1\"><p id=\"cod\">" + listaF5.get(i).getCodigo_formulario() + "</p></div>");
             out.print("<div class=\"col-md-3\" align=\"justify\"><p name=\"nombre\">" + listaF5.get(i).getNombre_formulario() + "</p></div>");
-            out.print("<div class=\"col-md-1\"><button class=\"btn btn-outline-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver\" class=\"btn btn-default\" type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarFormularioUsuario_1.jsp';this.form.submit();\" value='" + cod + listaF5.get(i).getCodigo_formulario() + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button></div>");
+            out.print("<div class=\"col-md-1\"><button class=\"btn btn-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver\" class=\"btn btn-default\" type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarFormularioUsuarios.jsp';this.form.submit();\" value='" + cod + listaF5.get(i).getCodigo_formulario() + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button></div>");
             out.print("<div class=\"col-md-3\"></div>");
             out.print("</div></form>");
             //out.print("<form action=\"publicarUsuario.jsp\" method=\"POST\" target=\"_self\" style=\"display: inline;\">");

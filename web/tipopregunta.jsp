@@ -1,9 +1,3 @@
-<%-- 
-    Document   : tipopregunta.jsp
-    Created on : 10-ago-2016, 22:51:58
-    Author     : david
---%>
-
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.connection.DB"%>
@@ -17,13 +11,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-	<%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+	
         <%
             DB con = DB.getInstancia();
             Connection co = con.getConnection();

@@ -1,17 +1,6 @@
-<%-- 
-    Document   : Message
-    Created on : 9/03/2018, 09:56:12 AM
-    Author     : D4ve
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
     <head>
-
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Mensaje</title>
         <%
@@ -26,7 +15,7 @@
             <div id="imprimir">
                 <div class="row bg-default">
                     <!-- <div class="col-md-2"><center><img src="espelogo.jpg"/></center></div> -->
-                    <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+                    <div class="col-md-8"><center><h1>Formularios</h1></center></div>
                     <div class="col-md-2"></div>
                 </div>
                 <ul class="nav nav-tabs" role="tablist">

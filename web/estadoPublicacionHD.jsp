@@ -1,9 +1,3 @@
-<%-- 
-    Document   : estadoPublicacion
-    Created on : 05/03/2018, 10:40:27
-    Author     : Tefii
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.connection.DB2"%>
 <%@page import="espe.edu.ec.models.FormPersona"%>
@@ -19,9 +13,26 @@
 <%@page import="espe.edu.ec.models.Usuario"%> <!-- import de Usuario -->
 <%@page session="true" %> <!-- Se agrega a modo de validacion -->
 <!DOCTYPE html>
-<% Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser")); //Recibe el atributo de sesion del Servlet
-/*Si el atributo es diferente de nulo muestra la pagina */
-    if (currentUser != null) { %>
+<%
+  Cookie cookie = null;
+  Cookie[] cookies = null;
+  String pidm = null;
+  String id = null;
+  cookies = request.getCookies();
+  if (cookies != null) {
+    for (int i = 0; i < cookies.length; i++) {
+      cookie = cookies[i];
+      if (cookie.getName().equals("pidm")) {
+        pidm = cookie.getValue();
+      } else if (cookie.getName().equals("id")) {
+        id = cookie.getValue();
+      }
+    }
+  } else {
+    out.println("<h2>No cookies founds</h2>");
+  }
+  String currentUser = pidm;
+  if (currentUser != null) { %>
 <html>
     <head>
         <title>Estado Publicación</title>
@@ -30,13 +41,11 @@
         <%
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
-        %>
-        
+        %>   
     </head>
     <body>
         <div>
             <div class="row bg-default">
-                <!-- <div class="col-md-2"><center><img src="espelogo.jpg"/></center></div> -->
                 <div class="col-md-8"><center><h1>Gestión de Formularios</h1></center></div>
                 <div class="col-md-2"></div>
             </div>
@@ -52,7 +61,6 @@
             //PAS8
             DB2 con2 = DB2.getInstancia();
             Connection co2 = con2.getConnection();
-
             //request publicar Usuario
             String query = request.getParameter("query");
             String fechaInicio = request.getParameter("fechaInicio");
@@ -73,23 +81,20 @@
             String diaFin = parts2[2];
             String FechaFin = diaFin + "/" + mesFin + "/" + anioFin;
             String queryF = "\"" + query + "\"";
-
             java.util.Date date = new java.util.Date();
             long t = date.getTime();
             java.sql.Date sqlDate = new java.sql.Date(t);
-
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             /*EJECUCION QUERY PARA EXTRAER PIDM*/
             LinkedList<Integer> listaPIDM = new LinkedList<Integer>();
             LinkedList<Integer> PIDM = new LinkedList<Integer>();
             LinkedList<FormPersona> listaFP = new LinkedList<FormPersona>();
             try {
-                ResultSet rs2 = co2.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM FROM SPRIDEN WHERE SPRIDEN_CHANGE_IND IS NULL AND SPRIDEN_ID IN('" + query + "')").executeQuery();
+                ResultSet rs2 = co2.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM FROM SPRIDEN WHERE SPRIDEN_CHANGE_IND IS NULL AND SPRIDEN_ID IN('" + query + "')").executeQuery();  //'" + query + "')
                 int codPIDM = 0;
                 while (rs2.next()) {
                     codPIDM = (rs2.getInt(1));
                     listaPIDM.add(codPIDM);
-
                 }
                 rs2.close();
             } catch (Exception ex) {
@@ -104,44 +109,8 @@
                 listaFP.add(fp);
             }
             rs1.close();
-            ///////////////////////////////////////////////
-            /*INSERT TABLA PIDM*/
-/*COMPARAR PIDMS*/
-/*    ResultSet rsC = co.prepareStatement("SELECT * FROM UTIC.SATURN_SPRIDEN").executeQuery();
-           int valPIDM=0;
-           while(rsC.next())
-           {
-               valPIDM=(rsC.getInt(1));
-               PIDM.add(valPIDM);
-                
-           }
-           rsC.close();*/
-
             Date Fecha = new Date();
             java.sql.Date FechaSql = new java.sql.Date(Fecha.getYear(), Fecha.getMonth(), Fecha.getDate());
-            //JOptionPane.showMessageDialog(null, FechaSql.toString());
-            /*  try
-           {
-               String sql= "INSERT INTO UTIC.SATURN_SPRIDEN (SPRIDEN_PIDM) VALUES (?)";
-               PreparedStatement ps = co.prepareStatement(sql);
-                
-               for (int i=0 ; i<listaPIDM.size();i++)
-               {
-                   for(int j=0;j<PIDM.size();j++)
-                   {
-                       if(!listaPIDM.get(i).equals(PIDM.get(j)))
-                       {
-                           ps.setInt(1, listaPIDM.get(i));
-                           ps.executeUpdate();
-                       }                
-                   }
-               }
-           }
-           catch (Exception ex)
-           {
-               //out.println("Error en guardar pidms"+ex);
-           }*/
-
             //////////////////////////////////////////////
             /*INSERT FORMULARIO -PERSONA*/
             int cod = 0;
@@ -152,12 +121,7 @@
             }
 
             try {
-                String sql = ""
-                        + ""
-                        + ""
-                        + ""
-                        + ""
-                        + "INSERT INTO UTIC.UZGTFORMULARIO_PERSONA (SPRIDEN_PIDM,CODIGO_UZGTFORMULARIOS_PERSONA,CODIGO_UZGTFORMULARIOS,UZGTFORMULARIOS_PERSONA_FECHA,UZGTFORMULARIOS_ESTADO_SEG, UZGTFORMULARIOS_ESTADO_LLENADO) VALUES (?,?,?,?,?,?)";
+                String sql = "INSERT INTO UTIC.UZGTFORMULARIO_PERSONA (SPRIDEN_PIDM,CODIGO_UZGTFORMULARIOS_PERSONA,CODIGO_UZGTFORMULARIOS,UZGTFORMULARIOS_PERSONA_FECHA,UZGTFORMULARIOS_ESTADO_SEG, UZGTFORMULARIOS_ESTADO_LLENADO) VALUES (?,?,?,?,?,?)";
                 PreparedStatement ps = co.prepareStatement(sql);
                 for (int i = 0; i < listaPIDM.size(); i++) {
                     ps.setInt(1, listaPIDM.get(i));
@@ -168,16 +132,12 @@
                     ps.setString(6, "N");
                     ps.executeUpdate();
                 }
-                //out.println("<center><div class=\"alert alert-success\"><strong>Exito!</strong> Se Guardo correctamente</div></center>");
-
             } catch (Exception ex) {
                 out.println("Error en formulario-persona" + ex);
             }
-
             //////////////////////////////////////////////////////////////////////////////////
             /*UPDATE TABLA FORMULARIOS*/
             try {
-
                 String cadena = "SELECT DISTINCT SPRIDEN_PIDM FROM SPRIDEN WHERE SPRIDEN_CHANGE_IND IS NULL AND SPRIDEN_ID IN('" + query + "')";
                 String aux = "";
                 String apos = "'";
@@ -192,26 +152,19 @@
                 } catch (Exception e) {
                     System.out.println("error cadena" + e);
                 }
-
                 co.prepareStatement("UPDATE UTIC.UZGTFORMULARIOS SET UZGTFORMULARIOS_FECHA_INICIO='" + FechaInicio + "', UZGTFORMULARIOS_FECHA_FIN='" + FechaFin + "', UZGTFORMULARIOS_ESTADO=" + 1 + ", UZGTFORMULARIOS_EO= '" + tF + "', UZGTFORMULARIOS_QUERY_P= '" + aux + "'  WHERE CODIGO_UZGTFORMULARIOS =" + codF + "").executeUpdate();
-
-//co.prepareStatement("UPDATE UTIC.UZGTFORMULARIOS SET  UZGTFORMULARIOS_FECHA_INICIO='" + diaInicio+"/"+mesI +"/"+anioInicio +"' WHERE CODIGO_UZGTFORMULARIOS ="+codF+"").executeUpdate();                                                                                       UZGTFORMULARIOSPER_USUA_MODIF                         
-                //co.prepareStatement("UPDATE UTIC.UZGTFORMULARIO_PERSONA SET UZGTFORMULARIOS_ESTADO_SEG= '" + eF + "'  WHERE  SPRIDEN_PIDM =" + listaPIDM + "").executeUpdate();
                 out.println("<meta http-equiv='refresh' content='3;URL=mostrarFormularioHD.jsp'>");//redirects after 3 seconds
                 out.println("<center><div h5 class='text alert alert-success'><strong><p style='color:green;'>Éxito Formulario Publicado</p></strong></h5></div></center>");
             } catch (Exception ex) {
                 out.println("Error update " + ex);
-
             }
             con.closeConexion();
-            //out.println("SQL "+queryF);
         %>
     </body>
 </html>
-<% } else {
-
+<% } 
+else {
 %>
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -219,30 +172,19 @@
         <title>No Autorizado</title>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+       
         <%
             try {
 
         %> 
         <ul class="nav nav-tabs" role="tablist">
-
             <div class="col-md-4 alert alert-danger"><center>Error! Usuario no autorizado</center></div>       
         </form>
     </ul>
     <%            } catch (Exception e) {
             System.out.println("error." + e.getMessage());
-
         }
     %>
 </body>
 </html>
-
-
-
 <% }%>

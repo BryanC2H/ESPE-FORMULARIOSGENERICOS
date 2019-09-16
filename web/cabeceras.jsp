@@ -1,9 +1,3 @@
-<%-- 
-    Document   : cabeceras
-    Created on : 16-oct-2016, 17:28:03
-    Author     : david
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.connection.DB2"%>
 <%@page import="espe.edu.ec.models.Matriz"%>
@@ -23,13 +17,7 @@
         %>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+        
         <%
 
             try {
@@ -38,7 +26,7 @@
 
         <div class="row bg-default">
             <!--<div class="col-md-2"><center><img src="espelogo.jpg"/></center></div> -->
-            <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+            <div class="col-md-8"><center><h1>Formularios</h1></center></div>
             <div class="col-md-2"></div>
         </div>
         <%      request.setCharacterEncoding("UTF-8");

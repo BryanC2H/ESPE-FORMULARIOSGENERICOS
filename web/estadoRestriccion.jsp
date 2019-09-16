@@ -1,9 +1,3 @@
-<%-- 
-    Document   : estadoRestriccion
-    Created on : 08/03/2018, 10:33:42
-    Author     : Tefii
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
@@ -28,14 +22,7 @@
         %>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-       
+        
         <%
             try {
 

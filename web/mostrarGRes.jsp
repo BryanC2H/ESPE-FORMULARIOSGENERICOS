@@ -1,9 +1,3 @@
-<%-- 
-    Document   : mostrarFormulario
-    Created on : 14-ene-2018, 21:55:20
-    Author     : D4ve
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Usuario"%>
 <%@page import="espe.edu.ec.connection.DB"%>
@@ -31,84 +25,48 @@
         <%
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
-        %>
-
-
-        <%
             Cookie cookie = null;
-    Cookie[] cookies = null;
-    String pidm = null;
-    String id = null;
-    cookies = request.getCookies();
-    if (cookies != null) {
-        for (int i = 0; i < cookies.length; i++) {
-            cookie = cookies[i];
-            if (cookie.getName().equals("pidm")) {
-                pidm = cookie.getValue();
-            } else if (cookie.getName().equals("id")) {
-                id = cookie.getValue();
+            Cookie[] cookies = null;
+            String pidm = null;
+            String id = null;
+            DecryptSmAtrix dec = new DecryptSmAtrix();
+            int PIDMG = 0;
+            cookies = request.getCookies();
+            if (cookies != null) {
+                for (int i = 0; i < cookies.length; i++) {
+                    cookie = cookies[i];
+                    if (cookie.getName().equals("pidm")) {
+                        pidm = cookie.getValue();
+                    } else if (cookie.getName().equals("id")) {
+                        id = cookie.getValue();
+                    }
+                }
+            } else {
+                out.println("<h2>No cookies founds</h2>");
             }
-        }
-    } else {
-        out.println("<h2>No cookies founds</h2>");
-    }
-    String currentUser = pidm;
-            Logger LOGGER = Logger.getLogger("bitacora.subnivel.Control");
-            // int PIDMget = 0;
-
-            int PIDMget = 2401;
-
-            //int PIDMget = 348249;
-            //int PIDMget = 7683;
-            String param = "bccd67a1d7973a4109ab65c82680c115";
-
+            PIDMG = Integer.parseInt(pidm);
+            int PIDMget = PIDMG;
             try {
-                DecryptSmAtrix dec = new DecryptSmAtrix();
-                 id = request.getParameter("param");
-                //String id = "L00347668";
-                //String id = "L00368786";
-
-                //LOGGER.log(Level.INFO, "MOSTRAR GRES ID: ", id);
                 if (id.length() > 0) {
-                    //JOptionPane.showMessageDialog(null, "entro al if");   
-                    id = new String(dec.decrypt(id));
-
-                    // LOGGER.log(Level.INFO, "MOSTRAR GRES ID: ", id);
                     DB2 conn = DB2.getInstancia();
                     Connection coo = conn.getConnection();
-
-                    // JOptionPane.showMessageDialog(null, "PIDM: "+user.getPIDM());
-                    ResultSet res = coo.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM as estPIDM FROM SPRIDEN WHERE SPRIDEN.SPRIDEN_ID = '" + id + "' AND SPRIDEN.SPRIDEN_CHANGE_IND IS NULL").executeQuery();
-                    // LOGGER.log(Level.INFO, "MOSTRAR GRES res: ", res);
+                    ResultSet res = coo.prepareStatement("SELECT DISTINCT SPRIDEN_PIDM as estPIDM FROM SPRIDEN WHERE SPRIDEN.SPRIDEN_ID = " + id + " AND SPRIDEN.SPRIDEN_CHANGE_IND IS NULL").executeQuery();
                     if (res.next()) {
-                        //   LOGGER.log(Level.INFO, "MOSTRAR GRES res: ", res);
                         PIDMget = res.getInt(1);
                     }
                     conn.closeConexion();
                 } else {
-
                     PIDMget = Integer.parseInt(id);
-                    //LOGGER.log(Level.INFO, "MOSTRAR GRES PIDMget:  ", PIDMget);
-
                 }
             } catch (Exception e) {
                 //LOGGER.log(Level.WARNING, "MOSTRAR GRES ", e);
 
             }
-
-            // JOptionPane.showMessageDialog(null, "PIDM: "+PIDMget);
         %>
     </head>
     <body>
-        <%LOGGER.info("esta es la prueba."); %>
-
-
-        <%             try {
-
+        <% try {
         %>
-
-
-
         <p></p>
         <div class="container">
             <nav class="navbar navbar-default" role="tablist">
@@ -152,16 +110,13 @@
         <!-- --------------------------------Fin Navbar superior-------------------------------------------  -->
 
         <div class="container">
-
         </center><div class="col-3 .col-md-7" align="center"><h5 class="text alert alert-success">Los formularios se pueden llenar una sola vez, después deberá guardar e imprimir inmediatamente, ya que luego no tendrá opción de cambiar o volver a imprimir.</h5></div></center>
 </div>
 </div>
 <div class="container">
-
     <center><div class="col-3 .col-md-7"><h3 class="text alert alert-success">Formlarios Obligatorios</h3></div></center>
 </div>
 </div>   
-
 <%    //FORMULARIOS OBLIGATORIOS
     DB con = DB.getInstancia();
     Connection co = con.getConnection();
@@ -210,16 +165,9 @@
             out.print("<div class=\"col-md-1\"><button class=\"btn btn-outline-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Llenar\" \"type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarForm.jsp';this.form.submit();\" value='" + cod + listaF2.get(i).getCodigo_formulario() + "'><i class=\"fas fa-\" style='font-size:20px'>	&#xf044;</i></button></div>");
             out.print("<div class=\"col-md-3\"></div>");
             out.print("</div></form>");
-
-            //out.print("<form action=\"publicarUsuario.jsp\" method=\"POST\" target=\"_self\" style=\"display: inline;\">");
-            //out.print("<div class=\"row\">");
-            //out.print("<div class=\"col-md-3\"><button class=\"btn btn-default\" type=\"text\" name=\"enviar\" value='"+cod+listaF.get(i).getCodigo_formulario()+"'>Publicar</button></div>");
-            //out.print("</div></form>");
         }
     }
 %>
-
-
 
 <% //Muestra los Formularios llenados del Usuario
     LinkedList<Integer> codForms1 = new LinkedList<Integer>();
@@ -249,7 +197,7 @@
     }
     //Muestra los Formularios por llenar del Usuario
     LinkedList<Integer> codForms = new LinkedList<Integer>();
-    ResultSet resu = co.prepareStatement("select p.codigo_uzgtformularios from UTIC.UZGTFORMULARIO_PERSONA p,UTIC.UZGTFORMULARIOS f where f.UZGTFORMULARIOS_FECHA_FIN >= to_CHAR(current_Date, 'DD/MM/RRRR') AND p.spriden_pidm =" + PIDMget + "and p.codigo_uzgtformularios = f.codigo_uzgtformularios and ( p.uzgtformularios_estado_llenado ='N' or f.uzgtformularios_estado_llenado ='S' or f.uzgtformularios_estado_llenado ='M' )  ORDER BY codigo_UZGTFORMULARIOS ASC").executeQuery();
+    ResultSet resu = co.prepareStatement("select p.codigo_uzgtformularios from UTIC.UZGTFORMULARIO_PERSONA p,UTIC.UZGTFORMULARIOS f where f.UZGTFORMULARIOS_FECHA_FIN >= to_CHAR(current_Date, 'DD/MM/RRRR') AND p.spriden_pidm ='"+pidm+"' and p.codigo_uzgtformularios = f.codigo_uzgtformularios and p.uzgtformularios_estado_llenado ='N' ORDER BY codigo_UZGTFORMULARIOS ASC").executeQuery();
     while (resu.next()) {
         Integer codForm = resu.getInt(1);
         codForms.add(codForm);
@@ -296,8 +244,6 @@
         }
         rs3.close();
     }
-
-
 %>
 <div class="container">
     <center><div class="col-3 .col-md-7"><h3 class="text alert alert-success">Formularios pendientes</h3></div></center>
@@ -325,13 +271,11 @@
             out.print("<form action=\"mostrarForm.jsp\" method=\"POST\" target=\"_self\" style=\"display:inline;\">");
             out.print("<div class=\"row\">");
             out.print("<div class=\"col-md-4\"></div>");
-
             out.print("<td><div class=\"col-md-1\"><p id=\"cod\">" + listaF.get(i).getCodigo_formulario() + "</p></div>");
             out.print("<div class=\"col-md-3\" align=\"justify\"><p name=\"nombre\">" + listaF.get(i).getNombre_formulario() + "</p></div>");
             out.print("<input type=\"hidden\" name= \"param\" value=\"" + PIDMget + "\" >");
             out.print("<div class=\"col-md-1\"><button class=\"btn btn-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Llenar\" \"type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarForm.jsp';this.form.submit();\" value='" + cod + listaF.get(i).getCodigo_formulario() + "'><i class=\"fas fa-\" style='font-size:20px'>	&#xf044;</i></button></div>");
             out.print("<div class=\"col-md-3\"></div>");
-
             out.print("</div></form>");
 
         }
@@ -400,10 +344,6 @@
             out.print("<div class=\"col-md-1\"><button class=\"btn btn-info\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver\" class=\"btn btn-default\" type=\"text\" name=\"Submit\" onclick=\"this.form.action='mostrarFormularioUsuario_1.jsp';this.form.submit();\" value='" + cod + listaF5.get(i).getCodigo_formulario() + "'><i class=\"fas fa-eye\" style='font-size:20px'></i></button></div>");
             out.print("<div class=\"col-md-3\"></div>");
             out.print("</div></form>");
-            //out.print("<form action=\"publicarUsuario.jsp\" method=\"POST\" target=\"_self\" style=\"display: inline;\">");
-            //out.print("<div class=\"row\">");
-            //out.print("<div class=\"col-md-3\"><button class=\"btn btn-default\" type=\"text\" name=\"enviar\" value='"+cod+listaF.get(i).getCodigo_formulario()+"'>Publicar</button></div>");
-            //out.print("</div></form>");
         }
     }
     con.closeConexion();

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : prueba
-    Created on : 30/01/2018, 9:07:10
-    Author     : DIEGOPC
---%>
-
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="espe.edu.ec.connection.DB2"%>
@@ -15,13 +9,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-	<%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
+	
 
         <%             try {
 

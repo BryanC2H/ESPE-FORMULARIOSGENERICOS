@@ -1,10 +1,3 @@
-<%-- 
-    Document   : mostrarFormLleno
-    Created on : 12/03/2018, 11:10:53
-    Author     : DIEGOPC
---%>
-
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.models.Cabecera"%>
 <%@page import="espe.edu.ec.models.Matriz"%>
@@ -26,7 +19,7 @@
         <%
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
-       
+
             DB con = DB.getInstancia();
             Connection co = con.getConnection();
             LinkedList<Formulario> listaF = new LinkedList<Formulario>();
@@ -84,13 +77,6 @@
         %>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
         <%
             try {
 

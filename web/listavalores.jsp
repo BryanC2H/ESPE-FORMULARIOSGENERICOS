@@ -1,9 +1,3 @@
-<%-- 
-    Document   : listavalores
-    Created on : 21-oct-2016, 10:39:16
-    Author     : david
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -61,14 +55,7 @@
         %>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-
+       
         <%
 
             /*  Connection conec=null;

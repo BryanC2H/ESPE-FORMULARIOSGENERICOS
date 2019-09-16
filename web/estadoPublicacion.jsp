@@ -1,9 +1,3 @@
-<%-- 
-    Document   : estadoPublicacion
-    Created on : 05/03/2018, 10:40:27
-    Author     : Tefii
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="espe.edu.ec.connection.DB2"%>
 <%@page import="espe.edu.ec.models.FormPersona"%>
@@ -18,14 +12,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="espe.edu.ec.models.Usuario"%> <!-- import de Usuario -->
 <%@page session="true" %> <!-- Se agrega a modo de validacion -->
+
 <!DOCTYPE html>
+
 <%
     Cookie cookie = null;
     Cookie[] cookies = null;
     String pidm = null;
     String id = null;
     cookies = request.getCookies();
-    if (cookies != null) {
+    if (cookies
+            != null) {
         for (int i = 0; i < cookies.length; i++) {
             cookie = cookies[i];
             if (cookie.getName().equals("pidm")) {
@@ -38,7 +35,8 @@
         out.println("<h2>No cookies founds</h2>");
     }
     String currentUser = pidm;
-    if (currentUser != null) { %>
+    if (currentUser
+            != null) { %>
 <html>
     <head>
         <title>Estado Publicación</title>
@@ -48,6 +46,7 @@
             out.println(ConstantesForm.Css);
             out.println(ConstantesForm.js);
         %>    </head>
+
     <body>
         <div>
             <div class="row bg-default">
@@ -106,6 +105,8 @@
                     listaPIDM.add(codPIDM);
 
                 }
+                out.println("select1 " + pidm);
+
                 rs2.close();
             } catch (Exception ex) {
                 out.println("Error en sacar pidms" + ex);
@@ -118,6 +119,7 @@
                 fp.setCodFormP(rs1.getInt(2));
                 listaFP.add(fp);
             }
+
             rs1.close();
             ///////////////////////////////////////////////
             /*INSERT TABLA PIDM*/
@@ -167,12 +169,7 @@
             }
 
             try {
-                String sql = ""
-                        + ""
-                        + ""
-                        + ""
-                        + ""
-                        + "INSERT INTO UTIC.UZGTFORMULARIO_PERSONA (SPRIDEN_PIDM,CODIGO_UZGTFORMULARIOS_PERSONA,CODIGO_UZGTFORMULARIOS,UZGTFORMULARIOS_PERSONA_FECHA,UZGTFORMULARIOS_ESTADO_SEG, UZGTFORMULARIOS_ESTADO_LLENADO) VALUES (?,?,?,?,?,?)";
+                String sql = "INSERT INTO UTIC.UZGTFORMULARIO_PERSONA (SPRIDEN_PIDM,CODIGO_UZGTFORMULARIOS_PERSONA,CODIGO_UZGTFORMULARIOS,UZGTFORMULARIOS_PERSONA_FECHA,UZGTFORMULARIOS_ESTADO_SEG, UZGTFORMULARIOS_ESTADO_LLENADO) VALUES (?,?,?,?,?,?)";
                 PreparedStatement ps = co.prepareStatement(sql);
                 for (int i = 0; i < listaPIDM.size(); i++) {
                     ps.setInt(1, listaPIDM.get(i));
@@ -183,8 +180,8 @@
                     ps.setString(6, "N");
                     ps.executeUpdate();
                 }
-                //out.println("<center><div class=\"alert alert-success\"><strong>Exito!</strong> Se Guardo correctamente</div></center>");
 
+                //out.println("<center><div class=\"alert alert-success\"><strong>Exito!</strong> Se Guardo correctamente</div></center>");
             } catch (Exception ex) {
                 out.println("Error en formulario-persona" + ex);
             }
@@ -218,6 +215,8 @@
                 out.println("Error update " + ex);
 
             }
+            out.println("update " + pidm);
+
             con.closeConexion();
             //out.println("SQL "+queryF);
         %>
@@ -234,15 +233,9 @@
         <title>No Autorizado</title>
     </head>
     <body>
-        <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-        <%
-            try {
+
+
+        <%            try {
 
         %> 
         <ul class="nav nav-tabs" role="tablist">

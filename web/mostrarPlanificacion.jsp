@@ -1,10 +1,3 @@
-<%-- 
-    Document   : mostrarPlanificacion
-    Created on : 14/06/2019, 09:23:24 AM
-    Author     : aetorres
---%>
-
-
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="espe.edu.ec.models.PlanificacionTutorias"%>
@@ -15,8 +8,26 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<% Usuario currentUser = (Usuario) (session.getAttribute("currentSessionUser")); //Recibe el atributo de sesion del Servlet
-/*Si el atributo es diferente de nulo muestra la pagina */if (currentUser!=null){ %>
+<%
+  Cookie cookie = null;
+  Cookie[] cookies = null;
+  String pidm = null;
+  String id = null;
+  cookies = request.getCookies();
+  if (cookies != null) {
+    for (int i = 0; i < cookies.length; i++) {
+      cookie = cookies[i];
+      if (cookie.getName().equals("pidm")) {
+        pidm = cookie.getValue();
+      } else if (cookie.getName().equals("id")) {
+        id = cookie.getValue();
+      }
+    }
+  } else {
+    out.println("<h2>No cookies founds</h2>");
+  }
+  String currentUser = pidm;
+  if (currentUser != null) { %>
 
 <head>
         <meta http-equiv="Content-Type" content="text/html" charset=UTF-8">

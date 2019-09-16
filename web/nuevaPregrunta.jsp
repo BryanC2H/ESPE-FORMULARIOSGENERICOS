@@ -1,10 +1,3 @@
-<%-- 
-    Document   : nuevaPregrunta
-    Created on : 11-ago-2016, 13:14:21
-    Author     : david
---%>
-
-
 <%@page import="espe.edu.ec.models.datoComun"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="java.io.BufferedReader"%>
@@ -83,7 +76,7 @@
         %>
         <div class="row bg-info">
             <!--<div class="col-md-2"><center><img src="espelogo.jpg"/></center></div>-->
-            <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+            <div class="col-md-8"><center><h1>Formularios</h1></center></div>
             <div class="col-md-2"></div>
         </div>
         <ul class="nav nav-tabs" role="tablist">

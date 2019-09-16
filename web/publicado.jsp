@@ -1,9 +1,3 @@
-<%-- 
-    Document   : publicado
-    Created on : 13/02/2018, 18:40:39
-    Author     : DIEGOPC
---%>
-
 <%@page import="java.sql.Date"%>
 <%@page import="espe.edu.ec.models.FormPersona"%>
 <%@page import="java.sql.ResultSet"%>
@@ -19,14 +13,6 @@
         <title>Formulario Publicado</title>
     </head>
     <body>
- <%@page import="org.apache.log4j.Logger"%>
-        <%! static Logger logger = Logger.getLogger("bitacora.subnivel.Control");%>
-        <%logger.info("esta es la prueba."); %>
-        <%logger.debug("Demostracion del mensaje");%>
-        <%logger.warn("Show WARN message");%>
-        <%logger.error("Show ERROR message");%>
-        <%logger.fatal("Show FATAL message"); %>
-
          <%             try {
         %>
 

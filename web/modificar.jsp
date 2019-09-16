@@ -1,9 +1,3 @@
-<%-- 
-    Document   : modificar.jsp
-    Created on : 18/12/2017, 9:40:36
-    Author     : DIEGOPC
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="espe.edu.ec.models.datoComun"%>

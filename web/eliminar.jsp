@@ -1,9 +1,3 @@
-<%-- 
-    Document   : eliminar
-    Created on : 21-oct-2016, 8:47:46
-    Author     : david
---%>
-
 <%@page import="espe.edu.ec.constant.ConstantesForm"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="espe.edu.ec.models.Respuestas"%>
@@ -101,7 +95,7 @@
     <body>
         <div class="row bg-default">
             <!--<div class="col-md-2"><center><img src="espelogo.jpg"/></center></div> -->
-            <div class="col-md-8"><center><h1>Servicios</h1></center></div>
+            <div class="col-md-8"><center><h1>Formularios</h1></center></div>
             <div class="col-md-2"></div>
         </div>
         <ul class="nav nav-tabs" role="tablist">
